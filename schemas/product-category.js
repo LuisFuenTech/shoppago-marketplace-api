@@ -11,4 +11,3 @@ const prodCatSchema = new Schema(
 );
 
 module.exports = model("ProductCategory", prodCatSchema);
-module.exports.prodCatSchema = prodCatSchema;

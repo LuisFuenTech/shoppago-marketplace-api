@@ -1,9 +1,8 @@
 const { Schema, model } = require("mongoose");
-const { ProdCatSchema } = require("./index");
 
 const shoppingSchema = new Schema(
   {
-    products: [ProdCatSchema]
+    products: [{ type: Schema.Types.ObjectId, ref: "ProductCategory" }]
   },
   {
     timestamps: true
