@@ -78,9 +78,9 @@ app.use((req, res, next) => {
 app.use(redirectToHTTPS([/localhost:(\d{4})/], [], 301));
 
 app.get("/", (req, res) => {
-  res.status(200).send("Hello guapo");
+  res.status(200).send("Hello sweetheart");
 });
-app.use("/api", apiRoutes);
+app.use(apiRoutes);
 
 // app.get("*", function(req, res) {
 // res.render("user/not_found");
