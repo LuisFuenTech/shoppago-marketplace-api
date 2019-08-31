@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const { Product, ProdCat, Category, Shopping } = require("../schemas/index");
 
 const addCategory = async (req, res) => {
@@ -60,7 +61,19 @@ const addProduct = async (req, res) => {
   } else res.status(500).send("Operation failed");
 };
 
-const addShopping = async (req, res) => {};
+const addShopping = async (req, res) => {
+  const { productsId } = req.body;
+  const newShopping = new Shopping();
+
+  productsId.forEach(id => {
+    newShopping.products.push(mongoose.Types.ObjectId(id));
+  });
+
+  const savedShopping = await newShopping.save();
+
+  if (savedShopping) return res.status(201).json(savedShopping);
+  else res.status(500).send("Something went wrong!");
+};
 
 const addProductByJson = async (req, res) => {
   var allProducts = [];
@@ -111,6 +124,20 @@ const addProductByJson = async (req, res) => {
   res.status(201).json(allProducts);
 };
 
+const getShopping = async (req, res) => {
+  const { shoppingId } = req.params;
+  const findShopping = await Shopping.findById(shoppingId, {
+    select: "-createdAt -updatedAt -__v"
+  }).populate({
+    path: "products",
+    select: "-_id -createdAt -updatedAt -__v",
+    populate: { path: "product", select: "-_id -createdAt -updatedAt -__v" }
+  });
+
+  if (findShopping) res.status(200).json(findShopping);
+  else res.status(404).send(`Shopping cart doesn't exist`);
+};
+
 const getProductByCategory = async (req, res) => {
   const { category } = req.params;
 
@@ -133,7 +160,7 @@ const getProductByCategory = async (req, res) => {
 const getAllProducts = async (req, res) => {
   const findProducts = await ProdCat.find({}).populate({
     path: "product category",
-    select: "-_id -createdAt -updatedAt -__v"
+    select: "-createdAt -updatedAt -__v"
   });
 
   if (findProducts.length > 0) res.status(200).json(findProducts);
@@ -143,7 +170,9 @@ const getAllProducts = async (req, res) => {
 module.exports = {
   addCategory,
   addProduct,
+  addShopping,
   addProductByJson,
   getProductByCategory,
-  getAllProducts
+  getAllProducts,
+  getShopping
 };
