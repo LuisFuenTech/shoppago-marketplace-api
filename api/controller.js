@@ -23,14 +23,6 @@ const addProduct = async (req, res) => {
     categories
   } = req.body;
 
-  console.log("TCL: addProduct -> categories", categories);
-  console.log("TCL: addProduct -> image", image);
-  console.log("TCL: addProduct -> quantity", quantity);
-  console.log("TCL: addProduct -> priceFormated", priceFormated);
-  console.log("TCL: addProduct -> price", price);
-  console.log("TCL: addProduct -> description", description);
-  console.log("TCL: addProduct -> name", name);
-
   const newProduct = new Product({
     name: name,
     description: description,
@@ -68,25 +60,54 @@ const addProduct = async (req, res) => {
   } else res.status(500).send("Operation failed");
 };
 
+const addShopping = async (req, res) => {};
+
 const addProductByJson = async (req, res) => {
-  const allProducts = [];
-  const { name } = req.body;
-  const db = require("../data/db.json");
+  var allProducts = [];
+  const { name, categories } = req.body;
+  console.log("TCL: addProductByJson -> categories", categories);
+  console.log("TCL: addProductByJson -> name", name);
+  const db = require("../data/db8.json");
   const newJson = JSON.parse(JSON.stringify(db));
 
-  for (let [index, item] of newJson.entries()) {
-    const newProduct = new Product();
-    newProduct.name = name;
-    newProduct.description = item.description;
-    newProduct.price = item.price;
-    newProduct.priceFormated = Number(item.priceFormated);
-    newProduct.quantity = item.quantity;
-    newProduct.image = item.image;
+  for (let [index, category] of categories.entries()) {
+    console.log("TCL: addProductByJson -> category", category);
+    console.log("Hey");
+    const findCategory = await Category.findOne({ name: category })
+      .then(async result => {
+        console.log("TCL: addProductByJson -> result", result);
+        if (result) {
+          for (let [index, item] of newJson.entries()) {
+            const newProduct = new Product();
+            newProduct.name = name;
+            newProduct.description = item.description;
+            newProduct.price = item.price;
+            newProduct.priceFormated = item.priceFormated;
+            newProduct.quantity = item.quantity;
+            newProduct.image = item.image;
 
-    const savedProduct = await newProduct.save();
-    allProducts.push(savedProduct);
+            //await Promise.all([newProduct.save(),])
+            const savedProduct = await newProduct.save();
+
+            if (savedProduct) {
+              const newProdCat = new ProdCat({
+                product: savedProduct._id,
+                category: result._id
+              });
+
+              const savedProCat = await newProdCat.save();
+
+              if (savedProCat) {
+                allProducts.push(savedProduct);
+              }
+            }
+          }
+        }
+      })
+      .catch(e => {
+        res.status(500).json({ e });
+      });
   }
-
   res.status(201).json(allProducts);
 };
 
