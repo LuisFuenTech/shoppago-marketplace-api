@@ -175,7 +175,7 @@ const searchProduct = async (req, res) => {
   const { words } = req.query;
   try {
     const productsFounded = await Product.find({
-      $text: { $search: words }
+      $text: { $search: `${words}` }
     });
 
     productsFounded.length > 0
