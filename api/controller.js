@@ -152,7 +152,7 @@ const getProductByCategory = async (req, res) => {
       category: findCategory._id
     }).populate({
       path: "product category",
-      select: "-_id -createdAt -updatedAt"
+      select: " -createdAt -updatedAt"
     });
     console.log("TCL: getProductByCategory -> findProducts", findProducts);
 
@@ -161,11 +161,27 @@ const getProductByCategory = async (req, res) => {
   } else res.status(404).send(`Category ${category} not found`);
 };
 
-const getAllProducts = async (req, res) => {
+const getProducts = async (req, res) => {
   const findProducts = await Product.find({});
 
   if (findProducts.length > 0) res.status(200).json(findProducts);
   else res.status(404).send(`There's no prodcuts`);
+};
+
+const getProductsCat = async (req, res) => {
+  const findProducts = await ProdCat.find({}).populate({
+    path: "product category",
+    select: "-_id -createdAt -updatedAt"
+  });
+
+  if (findProducts.length > 0) res.status(200).json(findProducts);
+  else res.status(404).send(`There's no prodcuts`);
+};
+
+const deleteTrash = async (req, res) => {
+  const result = await Product.deleteMany({ description: "new product" });
+
+  res.status(200).json(result);
 };
 
 module.exports = {
@@ -174,6 +190,8 @@ module.exports = {
   addShopping,
   addProductByJson,
   getProductByCategory,
-  getAllProducts,
-  getShopping
+  getProducts,
+  getProductsCat,
+  getShopping,
+  deleteTrash
 };
