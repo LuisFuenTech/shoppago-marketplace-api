@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Product, ProdCat, Category, Shopping } = require("../schemas/index");
+const MailSender = require("../services/sendMail");
 
 const addCategory = async (req, res) => {
   const { name } = req.body;
@@ -182,11 +183,9 @@ const searchProduct = async (req, res) => {
 
 const makePurchase = async (req, res) => {
   const updated = [];
-  const { cart, subtotal } = req.body;
-  console.log("TCL: makePurchase -> subtotal", subtotal);
+  const { cart, subtotal, email } = req.body;
 
   const shoppingCart = JSON.parse(cart);
-  console.log("TCL: makePurchase -> shoppingCart", shoppingCart);
 
   for (let [index, product] of shoppingCart.entries()) {
     const { count } = product;
@@ -201,6 +200,8 @@ const makePurchase = async (req, res) => {
       updated.push(updateProduct);
     }
   }
+
+  await MailSender.sendMail(email, subtotal, shoppingCart);
 
   res.status(200).json(updated);
 };

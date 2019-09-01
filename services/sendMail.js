@@ -1,23 +1,28 @@
-const sendEmail = (recipient, subtotal, products) => {
+const HtmlReady = require("./generateHtml");
+
+const sendMail = async function(recipient, subtotal, products) {
   const sgMail = require("@sendgrid/mail");
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-for (const [index, person] of recipients.entries()) {
-  console.log("To: ", person);
+  sgMail.setApiKey(
+    "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"
+  );
   const msg = {
-    to: person,
-    from: "Developer <lfuentesa@unicartagena.edu.co>",
-    subject: "Sending with Twilio SendGrid",
-    text: " Easy to do anywhere, even with Node.js",
-    html: "<strong>and easy to do anywhere, even <i>Node.js</i></strong>"
+    to: recipient,
+    from: "Shoppago Marketplace <shoppago.io@email.com>",
+    subject: "Successful purchase! --Shoppago",
+    text: "Hey",
+    html: HtmlReady.generateHtml(products, subtotal)
   };
 
-  await mailResponse(sgMail, msg);
-
-  console.log("Success:", person);
-}
-}
+  try {
+    await mailResponse(sgMail, msg);
+    console.log("Success:", recipient);
+    return true;
+  } catch (error) {
+    console.log({ error: error });
+    throw Error(error);
+  }
+};
 
 function mailResponse(sender, message) {
   return new Promise((resolve, reject) => {
@@ -25,10 +30,10 @@ function mailResponse(sender, message) {
   });
 }
 
-function makeHtml(products){
-
+function makeHtml(products) {
+  return;
 }
 
 module.exports = {
-  sendEmail
-}
+  sendMail
+};
