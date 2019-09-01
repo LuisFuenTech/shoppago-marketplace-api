@@ -182,7 +182,8 @@ const searchProduct = async (req, res) => {
 
 const makePurchase = async (req, res) => {
   const updated = [];
-  const { cart } = req.body;
+  const { cart, subtotal } = req.body;
+  console.log("TCL: makePurchase -> subtotal", subtotal);
 
   const shoppingCart = JSON.parse(cart);
   console.log("TCL: makePurchase -> shoppingCart", shoppingCart);
