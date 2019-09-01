@@ -34,19 +34,12 @@ const addProduct = async (req, res) => {
   });
 
   const savedProduct = await newProduct.save();
-  console.log("TCL: addProduct -> savedProduct", savedProduct);
 
   if (savedProduct) {
     for (let [index, category] of categories.entries()) {
       const searchCategory = await Category.findOne({ name: category });
-      console.log("TCL: addProduct -> searchCategory", searchCategory);
 
       if (searchCategory) {
-        console.log("TCL: addProduct -> savedProduct._id", savedProduct._id);
-        console.log(
-          "TCL: addProduct -> searchCategory._id",
-          searchCategory._id
-        );
         const newProdCat = new ProdCat({
           product: savedProduct._id,
           category: searchCategory._id
@@ -82,17 +75,12 @@ const makePurchase = async (req, res) => {
 const addProductByJson = async (req, res) => {
   var allProducts = [];
   const { name, categories } = req.body;
-  console.log("TCL: addProductByJson -> categories", categories);
-  console.log("TCL: addProductByJson -> name", name);
   const db = require("../data/db8.json");
   const newJson = JSON.parse(JSON.stringify(db));
 
   for (let [index, category] of categories.entries()) {
-    console.log("TCL: addProductByJson -> category", category);
-    console.log("Hey");
     const findCategory = await Category.findOne({ name: category })
       .then(async result => {
-        console.log("TCL: addProductByJson -> result", result);
         if (result) {
           for (let [index, item] of newJson.entries()) {
             const newProduct = new Product();
@@ -154,7 +142,6 @@ const getProductByCategory = async (req, res) => {
       path: "product category",
       select: " -createdAt -updatedAt"
     });
-    console.log("TCL: getProductByCategory -> findProducts", findProducts);
 
     if (findProducts.length > 0) return res.status(200).json(findProducts);
     else res.status(404).send(`Category ${category} is empty`);
