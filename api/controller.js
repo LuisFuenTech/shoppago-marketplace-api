@@ -75,6 +75,10 @@ const addShopping = async (req, res) => {
   else res.status(500).send("Something went wrong!");
 };
 
+const makePurchase = async (req, res) => {
+  const { productsId } = req.body;
+};
+
 const addProductByJson = async (req, res) => {
   var allProducts = [];
   const { name, categories } = req.body;
@@ -158,10 +162,7 @@ const getProductByCategory = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-  const findProducts = await ProdCat.find({}).populate({
-    path: "product category",
-    select: "-createdAt -updatedAt -__v"
-  });
+  const findProducts = await Product.find({});
 
   if (findProducts.length > 0) res.status(200).json(findProducts);
   else res.status(404).send(`There's no prodcuts`);
