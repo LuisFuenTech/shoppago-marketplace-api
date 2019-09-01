@@ -72,7 +72,7 @@ let allProducts = alibaba.map(item => {
     item
       .querySelector(".price")
       .childNodes[1].innerText.split("-")[0]
-      .replace(/[$,]/g, "")
+      .replace(/[$,]/gi, "")
   );
   return newItem;
 });

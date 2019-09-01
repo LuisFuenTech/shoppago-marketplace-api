@@ -12,6 +12,7 @@ app.get("/delete", apiController.deleteTrash);
 app.post("/add-category", apiController.addCategory);
 app.post("/add-product", apiController.addProduct);
 app.post("/add-shopping", apiController.addShopping);
+app.post("/make-purchase", apiController.makePurchase);
 app.post("/add-json", apiController.addProductByJson);
 
 module.exports = app;

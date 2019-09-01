@@ -68,10 +68,6 @@ const addShopping = async (req, res) => {
   else res.status(500).send("Something went wrong!");
 };
 
-const makePurchase = async (req, res) => {
-  const { productsId } = req.body;
-};
-
 const addProductByJson = async (req, res) => {
   var allProducts = [];
   const { name, categories } = req.body;
@@ -184,6 +180,51 @@ const searchProduct = async (req, res) => {
   } catch (error) {}
 };
 
+const makePurchase = async (req, res) => {
+  const updated = [];
+  const { cart } = req.body;
+
+  const shoppingCart = JSON.parse(cart);
+  console.log("TCL: makePurchase -> shoppingCart", shoppingCart);
+
+  for (let [index, product] of shoppingCart.entries()) {
+    const { count } = product;
+    const findProduct = await Product.findById(product._id);
+
+    if (findProduct) {
+      const updateProduct = await Product.findByIdAndUpdate(
+        findProduct._id,
+        { quantity: findProduct.quantity - count },
+        { new: true }
+      );
+      updated.push(updateProduct);
+    }
+  }
+
+  res.status(200).json(updated);
+};
+
+/* const forDev = async (req, res) => {
+  const objects = [];
+  const findProducts = await Product.find({});
+
+  if (findProducts.length > 0) {
+    for (let [index, item] of findProducts.entries()) {
+      const priceFormated = Number(item.price.replace(/[$,]/g, ""));
+      console.log("TCL: forDev -> priceFormated", priceFormated);
+
+      const updateProduct = await Product.findByIdAndUpdate(
+        item._id,
+        { priceFormated: priceFormated },
+        { new: true }
+      );
+
+      objects.push(updateProduct);
+    }
+    res.status(200).json(objects);
+  } else res.status(400).send("Ops!");
+}; */
+
 module.exports = {
   addCategory,
   addProduct,
@@ -194,5 +235,6 @@ module.exports = {
   getProductsCat,
   getShopping,
   searchProduct,
-  deleteTrash
+  deleteTrash,
+  makePurchase
 };
