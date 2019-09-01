@@ -171,6 +171,19 @@ const deleteTrash = async (req, res) => {
   res.status(200).json(result);
 };
 
+const searchProduct = async (req, res) => {
+  const { words } = req.query;
+  try {
+    const productsFounded = await Product.find({
+      $text: { $search: words }
+    });
+
+    productsFounded.length > 0
+      ? res.status(200).json(productsFounded)
+      : res.status(404).send("Not found");
+  } catch (error) {}
+};
+
 module.exports = {
   addCategory,
   addProduct,
@@ -180,5 +193,6 @@ module.exports = {
   getProducts,
   getProductsCat,
   getShopping,
+  searchProduct,
   deleteTrash
 };
