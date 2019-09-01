@@ -5,13 +5,13 @@ app.get("/by-category/:category", apiController.getProductByCategory);
 app.get("/products", apiController.getProducts);
 app.get("/products-category", apiController.getProductsCat);
 app.get("/get-shopping/:shoppingId", apiController.getShopping);
+app.get("/search", apiController.searchProduct);
 
 app.get("/delete", apiController.deleteTrash);
 
 app.post("/add-category", apiController.addCategory);
 app.post("/add-product", apiController.addProduct);
 app.post("/add-shopping", apiController.addShopping);
-app.post("/search", apiController.searchProduct);
 app.post("/add-json", apiController.addProductByJson);
 
 module.exports = app;
