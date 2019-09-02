@@ -82,9 +82,9 @@ const getShopping = async (req, res) => {
 };
 
 const getProductByCategory = async (req, res) => {
-  const { category } = req.params;
+  const { name } = req.params;
 
-  const findCategory = await Category.findOne({ name: category });
+  const findCategory = await Category.findOne({ name: name });
 
   if (findCategory) {
     const findProducts = await ProdCat.find({

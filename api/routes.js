@@ -1,7 +1,7 @@
 const app = require("express").Router();
 const { apiController } = require("./index");
 
-app.get("/category/products", apiController.getProductByCategory);
+app.get("/category/:name", apiController.getProductByCategory);
 app.get("/product/products", apiController.getProducts);
 app.get("/products-category", apiController.getProductsCat);
 app.get("/shopping/:id", apiController.getShopping);
