@@ -77,9 +77,10 @@ class App extends Component {
       );
       console.log(data);
       this.setState({ searchResult: data });
-      this.props.history.push("/result-list");
+      if (data) this.props.history.push("/result-list");
     } catch (error) {
-      console.log("SOmething went wrong with search results");
+      console.log("Something went wrong with search results", error);
+      this.props.history.push("/not-found");
     }
   };
 
@@ -145,8 +146,8 @@ class App extends Component {
     } = this.state;
 
     return (
-      <React.Fragment>
-        <div className="container-fluid">
+      <div className="container-fluid">
+        <React.Fragment>
           <Header
             items={navbar}
             categories={categories}
@@ -212,8 +213,8 @@ class App extends Component {
             <Route path="*" component={NotFound} />
           </Switch>
           <Footer copyright="&copy; Shoppago Marketplace 2019" />
-        </div>
-      </React.Fragment>
+        </React.Fragment>
+      </div>
     );
   }
 }

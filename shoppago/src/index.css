@@ -36,4 +36,22 @@ code {
 .custom-button {
   color: black !important;
   background-color: #95eee7 !important;
+  border-color: #95eee7 !important;
+}
+
+.btn-primary {
+  color: #000 !important;
+  background-color: #95eee7 !important;
+  border-color: #95eee7 !important;
+}
+
+.button-buy {
+  border-color: #b94cc4;
+  color: black !important;
+  background-color: #b94cc4 !important;
+}
+
+.i-am-centered {
+  margin: auto;
+  max-width: 1000px;
 }

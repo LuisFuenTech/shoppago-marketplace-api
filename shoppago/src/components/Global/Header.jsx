@@ -24,9 +24,9 @@ class Header extends Component {
               <form onSubmit={onSubmit}>
                 <div className="input-group mt-3">
                   <div className="input-group-prepend">
-                    <DropdownButton
+                    {/* <DropdownButton
                       as={InputGroup.Prepend}
-                      className="custom-button"
+                      className="primary"
                       title="Category"
                       id="input-group-dropdown-1"
                     >
@@ -42,14 +42,15 @@ class Header extends Component {
                             </Dropdown.Item>
                           );
                         })}
-                    </DropdownButton>
+                    </DropdownButton> */}
                   </div>
 
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control ml-3"
                     aria-describedby="basic-addon2"
                     onChange={onChange}
+                    required
                   ></input>
 
                   <div className="input-group-append">

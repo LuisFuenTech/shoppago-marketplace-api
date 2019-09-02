@@ -6,7 +6,7 @@ class Category extends Component {
   render() {
     const { products, category } = this.props;
     return (
-      <Container fluid>
+      <div className="container-fluid">
         <ul className="list-group">
           {products &&
             products.map((product, index) => {
@@ -54,7 +54,7 @@ class Category extends Component {
               );
             })}
         </ul>
-      </Container>
+      </div>
     );
   }
 }

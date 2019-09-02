@@ -7,7 +7,10 @@ class Card extends Component {
     const { category } = this.props;
     return (
       <div className="card w-25">
-        <Link to={`/by-category${category.url}`}>
+        <Link
+          style={{ "text-decoration": "none" }}
+          to={`/by-category${category.url}`}
+        >
           <center>
             <img
               style={{ width: "300px", height: "300px" }}

@@ -20,7 +20,7 @@ class SubTotal extends Component {
   }
 
   handleSubmit = async event => {
-    event.preventDefault();
+    //event.preventDefault();
     alert(this.state.email);
     try {
       await axios.post("/api/shopping/buy", {
@@ -40,7 +40,7 @@ class SubTotal extends Component {
       console.log(error);
       alert("Some errors", error);
     }
-    //this.props.history.push("/home");
+    this.props.history.push("/");
   };
 
   getTotalPriceFixed = products => {
@@ -80,7 +80,7 @@ class SubTotal extends Component {
             ></input>
           </div>
 
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn button-buy">
             <i className="fas fa-money-check-alt"></i> Buy
           </button>
         </form>

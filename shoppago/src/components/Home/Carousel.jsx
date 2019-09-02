@@ -1,5 +1,6 @@
 import React from "react";
 import { Carousel } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const CarouselHome = () => {
   return (
@@ -12,34 +13,49 @@ const CarouselHome = () => {
           alt="First slide"
         />
         <Carousel.Caption>
-          <h3>First slide label</h3>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          <Link
+            style={{ color: "#ffffff", "text-decoration": "none" }}
+            to="/by-category/consoles"
+          >
+            <h3>It's better with friends</h3>
+            <p>
+              No matter which videogame console you use, just get the high score
+            </p>
+          </Link>
         </Carousel.Caption>
       </Carousel.Item>
+
       <Carousel.Item>
         <img
           className="d-block w-100"
           src="https://res.cloudinary.com/test-dev/image/upload/v1567446388/walking_for_health_1_eztlcb.jpg"
           alt="Third slide"
         />
-
         <Carousel.Caption>
-          <h3>Second slide label</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <Link
+            style={{ color: "#000000", "text-decoration": "none" }}
+            to="/by-category/beauty"
+          >
+            <h3>Anytime, anywhere</h3>
+            <p>Never is late for working out</p>
+          </Link>
         </Carousel.Caption>
       </Carousel.Item>
+
       <Carousel.Item>
         <img
           className="d-block w-100"
           src="https://res.cloudinary.com/test-dev/image/upload/v1567446563/descarga_1_qb5pti.jpg"
           alt="Third slide"
         />
-
         <Carousel.Caption>
-          <h3>Third slide label</h3>
-          <p>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-          </p>
+          <Link
+            style={{ color: "#ffffff", "text-decoration": "none" }}
+            to="/by-category/living"
+          >
+            <h3>Stay home</h3>
+            <p>All you need maybe is a Netflix account and a UHD TV</p>
+          </Link>
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>
