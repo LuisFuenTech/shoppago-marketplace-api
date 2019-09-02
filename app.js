@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const express = require("express");
 const app = express();
-//const path = require("path");
+const path = require("path");
 //const passport = require('passport')
 //const expHbs = require("express-handlebars");
 //const session = require("express-session");
@@ -18,6 +18,8 @@ const navbarData = require("./data/nav-bar");
 const { apiRoutes } = require("./api/index");
 
 //Settings
+// Serve the static files from the React app
+app.use(express.static(path.join(__dirname, "build")));
 /* app.set("views", path.join(__dirname, "views"));
 app.engine(
   ".hbs",
@@ -77,13 +79,10 @@ app.use((req, res, next) => {
 
 app.use(redirectToHTTPS([/localhost:(\d{4})/], [], 301));
 
-app.get("/", (req, res) => {
-  res.status(200).send("Hello sweetheart");
-});
 app.use(apiRoutes);
 
-// app.get("*", function(req, res) {
-// res.render("user/not_found");
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 module.exports = app;

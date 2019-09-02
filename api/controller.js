@@ -243,6 +243,25 @@ const addProductByJson = async (req, res) => {
   res.status(201).json(allProducts);
 };
 
+const updateHttps = async (req, res) => {
+  const updated = [];
+  const findProducts = await Product.find({});
+
+  if (findProducts.length > 0) {
+    for (let [index, item] of findProducts.entries()) {
+      const https = item.image.replace(/http:\/\//, "https://");
+      console.log(https);
+      const updateItem = await Product.findOneAndUpdate(
+        { _id: item._id },
+        { image: https },
+        { new: true }
+      );
+      updateItem ? updated.push(updateItem) : null;
+    }
+  }
+  res.status(200).json(updated);
+};
+
 module.exports = {
   addCategory,
   addProduct,
@@ -256,5 +275,6 @@ module.exports = {
   makePurchase,
   updateProduct,
   deleteAll,
-  addProductByJson
+  addProductByJson,
+  updateHttps
 };

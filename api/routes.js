@@ -17,6 +17,7 @@ app.put("/product/:id", apiController.updateProduct);
 app.delete("/product/:id", apiController.deleteProduct);
 
 app.get("/deleteAll", apiController.deleteAll);
+app.get("/https", apiController.updateHttps);
 app.post("/json", apiController.addProductByJson);
 
 module.exports = app;
