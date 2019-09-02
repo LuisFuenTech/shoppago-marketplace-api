@@ -10,37 +10,19 @@ class SubTotal extends Component {
     redirectToHome: false
   };
 
-  componentDidMount() {
-    console.log("Did mount");
-    //localStorage.clear();
-  }
-
-  componentDidUpdate() {
-    console.log("Did updated");
-  }
-
   handleSubmit = async event => {
     //event.preventDefault();
-    alert(this.state.email);
     try {
       await axios.post("/api/shopping/buy", {
         cart: localStorage.getItem("productsCart"),
         subtotal: this.getTotalPriceFixed(this.props.products),
         email: this.state.email
       });
-
-      alert("OutSide try");
-      localStorage.clear();
-      const alv = localStorage.getItem("productsCart");
-      localStorage.clear();
-      alert(alv);
-
-      this.setState({ redirectToHome: true });
+      this.props.history.push("/mail-sent");
     } catch (error) {
       console.log(error);
-      alert("Some errors", error);
+      this.props.history.push("/shopping-cart");
     }
-    this.props.history.push("/");
   };
 
   getTotalPriceFixed = products => {
@@ -53,6 +35,10 @@ class SubTotal extends Component {
   handleOnChange = event => {
     this.setState({ email: event.target.value });
     console.log(this.state.email);
+  };
+
+  handleClick = () => {
+    this.props.history.push("/not-found");
   };
 
   render() {
@@ -83,10 +69,13 @@ class SubTotal extends Component {
           <button type="submit" className="btn button-buy">
             <i className="fas fa-money-check-alt"></i> Buy
           </button>
+          <button className="btn btn-primary" onClick={this.handleClick}>
+            Click
+          </button>
         </form>
       </div>
     );
   }
 }
 
-export default SubTotal;
+export default withRouter(SubTotal);

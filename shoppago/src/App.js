@@ -19,6 +19,7 @@ import Category from "./components/CategoryList";
 import CategoryDetail from "./components/CategoryList/CategoryDetail";
 import SearchList from "./components/SearchResult";
 import NotFound from "./components/NotFound";
+import MailSend from "./components/MailSend";
 
 class App extends Component {
   state = {
@@ -210,6 +211,7 @@ class App extends Component {
                 <ProductList {...props} products={productList} />
               )}
             />
+            <Route exact path="/mail-sent" component={MailSend} />
             <Route path="*" component={NotFound} />
           </Switch>
           <Footer copyright="&copy; Shoppago Marketplace 2019" />
