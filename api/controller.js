@@ -207,7 +207,7 @@ const deleteAll = async (req, res) => {
 const addProductByJson = async (req, res) => {
   var allProducts = [];
   const { categories } = req.body;
-  const newJson = require("../data/food.json");
+  const newJson = require("../data/toys.json");
 
   for (let [index, item] of newJson.entries()) {
     const newProduct = new Product();

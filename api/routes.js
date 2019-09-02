@@ -15,6 +15,7 @@ app.post("/shopping", apiController.addShopping);
 app.put("/product/:id", apiController.updateProduct);
 
 app.delete("/product/:id", apiController.deleteProduct);
+
 app.get("/deleteAll", apiController.deleteAll);
 app.post("/json", apiController.addProductByJson);
 
