@@ -18,7 +18,7 @@ const { apiRoutes } = require("./api/index");
 
 //Settings
 // Serve the static files from the React app
-app.use(express.static(path.join(__dirname, "shoppago-marketplace", "build")));
+app.use(express.static(path.join(__dirname, "shoppago", "build")));
 /* app.set("views", path.join(__dirname, "views"));
 app.engine(
   ".hbs",
@@ -81,9 +81,10 @@ app.use(redirectToHTTPS([/localhost:(\d{4})/], [], 301));
 app.use("/api", apiRoutes);
 
 app.get("*", (req, res) => {
-  res.sendFile(
-    path.join(__dirname, "shoppago-marketplace", "build", "index.html")
-  );
+  res.sendFile(path.join(__dirname, "shoppago", "build", "index.html"));
 });
+
+console.log("__dirname", __dirname);
+console.log("Path", path.join(__dirname, "shoppago-market", "build"));
 
 module.exports = app;
