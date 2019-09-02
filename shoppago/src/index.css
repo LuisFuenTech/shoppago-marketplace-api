@@ -1,0 +1,39 @@
+body {
+  background: #c4e2f2 !important;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.navbar {
+  margin-bottom: 30px;
+}
+
+.custom-carousel {
+  background-color: black;
+}
+
+.App {
+  text-align: center;
+}
+
+.custom-carousel {
+  background-color: black;
+}
+
+.custom-nav {
+  background-color: #f3d983;
+  background: #ffe14d;
+  color: #b94cc4 !important;
+}
+
+/* .nav-item-custom {
+  color: black !important;
+} */
+
+.custom-button {
+  color: black !important;
+  background-color: #95eee7 !important;
+}
