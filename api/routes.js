@@ -1,18 +1,21 @@
 const app = require("express").Router();
 const { apiController } = require("./index");
 
-app.get("/by-category/:category", apiController.getProductByCategory);
-app.get("/products", apiController.getProducts);
+app.get("/category/products", apiController.getProductByCategory);
+app.get("/product/products", apiController.getProducts);
 app.get("/products-category", apiController.getProductsCat);
-app.get("/get-shopping/:shoppingId", apiController.getShopping);
-app.get("/search", apiController.searchProduct);
+app.get("/shopping/:id", apiController.getShopping);
+app.get("/product/search", apiController.searchProductbyWords);
 
-app.get("/delete", apiController.deleteTrash);
+app.post("/category", apiController.addCategory);
+app.post("/product", apiController.addProduct);
+app.post("/shopping", apiController.addShopping);
+app.post("/shopping/buy", apiController.makePurchase);
 
-app.post("/add-category", apiController.addCategory);
-app.post("/add-product", apiController.addProduct);
-app.post("/add-shopping", apiController.addShopping);
-app.post("/make-purchase", apiController.makePurchase);
-app.post("/add-json", apiController.addProductByJson);
+app.put("/product/:id", apiController.updateProduct);
+
+app.delete("/product/:id", apiController.deleteProduct);
+app.get("/deleteAll", apiController.deleteAll);
+app.post("/json", apiController.addProductByJson);
 
 module.exports = app;

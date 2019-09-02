@@ -79,3 +79,47 @@ let allProducts = alibaba.map(item => {
 
 //3
 JSON.stringify(allProducts);
+
+//Add by JSON
+const addProductByJson = async (req, res) => {
+  var allProducts = [];
+  const { name, categories } = req.body;
+  const newJson = require("../data/db8.json");
+
+  for (let [index, category] of categories.entries()) {
+    const findCategory = await Category.findOne({ name: category })
+      .then(async result => {
+        if (result) {
+          for (let [index, item] of newJson.entries()) {
+            const newProduct = new Product();
+            newProduct.name = name.replace(/[\n]/, "");
+            newProduct.description = item.description.replace(/[\n]/, "");
+            newProduct.price = item.price;
+            newProduct.priceFormated = item.priceFormated;
+            newProduct.quantity = item.quantity;
+            newProduct.image = item.image;
+
+            //await Promise.all([newProduct.save(),])
+            const savedProduct = await newProduct.save();
+
+            if (savedProduct) {
+              const newProdCat = new ProdCat({
+                product: savedProduct._id,
+                category: result._id
+              });
+
+              const savedProCat = await newProdCat.save();
+
+              if (savedProCat) {
+                allProducts.push(savedProduct);
+              }
+            }
+          }
+        }
+      })
+      .catch(e => {
+        res.status(500).json({ e });
+      });
+  }
+  res.status(201).json(allProducts);
+};

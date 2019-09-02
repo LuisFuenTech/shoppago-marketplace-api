@@ -8,9 +8,9 @@ const addCategory = async (req, res) => {
 
   const saved = await newCategory.save();
 
-  if (saved)
-    return res.status(201).json({ message: "Category added", item: saved });
-  else res.status(500).send("Operation failed");
+  saved
+    ? res.status(201).json({ message: "Category added", item: saved })
+    : res.status(500).send("Operation failed");
 };
 
 const addProduct = async (req, res) => {
@@ -29,7 +29,7 @@ const addProduct = async (req, res) => {
     name: name,
     description: description,
     price: price,
-    priceFormtated: Number(priceFormated.replace("$", "")),
+    priceFormtated: Number(priceFormated.replace(/[$,]/gi, "")),
     quantity: Number(quantity),
     image: image
   });
@@ -50,8 +50,7 @@ const addProduct = async (req, res) => {
         if (savedProCat) prodCat.push(savedProCat);
       }
     }
-
-    return res.status(201).json({ message: "Product added", items: prodCat });
+    res.status(201).json({ message: "Product added", items: prodCat });
   } else res.status(500).send("Operation failed");
 };
 
@@ -69,62 +68,17 @@ const addShopping = async (req, res) => {
   else res.status(500).send("Something went wrong!");
 };
 
-const addProductByJson = async (req, res) => {
-  var allProducts = [];
-  const { name, categories } = req.body;
-  const db = require("../data/db8.json");
-  const newJson = JSON.parse(JSON.stringify(db));
-
-  for (let [index, category] of categories.entries()) {
-    const findCategory = await Category.findOne({ name: category })
-      .then(async result => {
-        if (result) {
-          for (let [index, item] of newJson.entries()) {
-            const newProduct = new Product();
-            newProduct.name = name;
-            newProduct.description = item.description;
-            newProduct.price = item.price;
-            newProduct.priceFormated = item.priceFormated;
-            newProduct.quantity = item.quantity;
-            newProduct.image = item.image;
-
-            //await Promise.all([newProduct.save(),])
-            const savedProduct = await newProduct.save();
-
-            if (savedProduct) {
-              const newProdCat = new ProdCat({
-                product: savedProduct._id,
-                category: result._id
-              });
-
-              const savedProCat = await newProdCat.save();
-
-              if (savedProCat) {
-                allProducts.push(savedProduct);
-              }
-            }
-          }
-        }
-      })
-      .catch(e => {
-        res.status(500).json({ e });
-      });
-  }
-  res.status(201).json(allProducts);
-};
-
 const getShopping = async (req, res) => {
   const { shoppingId } = req.params;
-  const findShopping = await Shopping.findById(shoppingId, {
-    select: "-createdAt -updatedAt -__v"
-  }).populate({
+  const findShopping = await Shopping.findById(shoppingId).populate({
     path: "products",
-    select: "-_id -createdAt -updatedAt -__v",
-    populate: { path: "product", select: "-_id -createdAt -updatedAt -__v" }
+    select: "-__v",
+    populate: { path: "product", select: "-__v" }
   });
 
-  if (findShopping) res.status(200).json(findShopping);
-  else res.status(404).send(`Shopping cart doesn't exist`);
+  findShopping
+    ? res.status(200).json(findShopping)
+    : res.status(404).send(`Shopping cart doesn't exist`);
 };
 
 const getProductByCategory = async (req, res) => {
@@ -137,39 +91,55 @@ const getProductByCategory = async (req, res) => {
       category: findCategory._id
     }).populate({
       path: "product category",
-      select: " -createdAt -updatedAt"
+      select: "-__v"
     });
 
-    if (findProducts.length > 0) return res.status(200).json(findProducts);
-    else res.status(404).send(`Category ${category} is empty`);
+    findProducts.length > 0
+      ? res.status(200).json(findProducts)
+      : res.status(404).send(`Category ${category} is empty`);
   } else res.status(404).send(`Category ${category} not found`);
 };
 
 const getProducts = async (req, res) => {
   const findProducts = await Product.find({});
 
-  if (findProducts.length > 0) res.status(200).json(findProducts);
-  else res.status(404).send(`There's no prodcuts`);
+  console.log("Counts of products:", findProducts.length);
+
+  findProducts.length > 0
+    ? res.status(200).json(findProducts)
+    : res.status(404).send(`There's no prodcuts`);
 };
 
 const getProductsCat = async (req, res) => {
   const findProducts = await ProdCat.find({}).populate({
     path: "product category",
-    select: "-_id -createdAt -updatedAt"
+    select: "-__V"
   });
 
-  if (findProducts.length > 0) res.status(200).json(findProducts);
-  else res.status(404).send(`There's no prodcuts`);
+  console.log("Counts of Products/Category", findProducts.length);
+
+  findProducts.length > 0
+    ? res.status(200).json(findProducts)
+    : res.status(404).send(`There's no prodcuts`);
 };
 
-const deleteTrash = async (req, res) => {
-  const result = await Product.deleteMany({ description: "new product" });
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  console.log("TCL: deleteProduct -> id", id);
+  const deleteProdCat = ProdCat.findOneAndDelete({ product: id });
+  const deleteProduct = Product.findOneAndDelete({ _id: id });
 
-  res.status(200).json(result);
+  try {
+    const results = await Promise.all([deleteProdCat, deleteProduct]);
+    res.status(200).json(results);
+  } catch (error) {
+    res.status(400).send("Opetation has failed", error);
+  }
 };
 
-const searchProduct = async (req, res) => {
+const searchProductbyWords = async (req, res) => {
   const { words } = req.query;
+
   try {
     const productsFounded = await Product.find({
       $text: { $search: `${words}` }
@@ -178,7 +148,9 @@ const searchProduct = async (req, res) => {
     productsFounded.length > 0
       ? res.status(200).json(productsFounded)
       : res.status(404).send("Not found");
-  } catch (error) {}
+  } catch (error) {
+    res.status(404).json({ error });
+  }
 };
 
 const makePurchase = async (req, res) => {
@@ -201,42 +173,86 @@ const makePurchase = async (req, res) => {
     }
   }
 
-  await MailSender.sendMail(email, subtotal, shoppingCart);
-
-  res.status(200).json(updated);
+  try {
+    await MailSender.sendMail(email, subtotal, shoppingCart);
+    res.status(200).json(updated);
+  } catch (error) {
+    res.status(400).json({ error });
+  }
 };
 
-/* const forDev = async (req, res) => {
-  const objects = [];
-  const findProducts = await Product.find({});
+const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
 
-  if (findProducts.length > 0) {
-    for (let [index, item] of findProducts.entries()) {
-      const priceFormated = Number(item.price.replace(/[$,]/g, ""));
-      console.log("TCL: forDev -> priceFormated", priceFormated);
+  const productUpdated = await Product.findOneAndUpdate(id, changes, {
+    new: true
+  });
 
-      const updateProduct = await Product.findByIdAndUpdate(
-        item._id,
-        { priceFormated: priceFormated },
-        { new: true }
-      );
+  productUpdated
+    ? res.status(200).json(productUpdated)
+    : res.status(400).send("Updated failed");
+};
 
-      objects.push(updateProduct);
-    }
-    res.status(200).json(objects);
-  } else res.status(400).send("Ops!");
-}; */
+const deleteAll = async (req, res) => {
+  await Product.deleteMany({});
+  await ProdCat.deleteMany({});
+  await Shopping.deleteMany({});
+
+  res.status(200).send("No back again");
+};
+
+const addProductByJson = async (req, res) => {
+  var allProducts = [];
+  const { categories } = req.body;
+  const newJson = require("../data/food.json");
+
+  for (let [index, item] of newJson.entries()) {
+    const newProduct = new Product();
+
+    newProduct.name = item.description
+      .replace(/[\n]/, "")
+      .split(" ")
+      .slice(0, 3)
+      .join(" ");
+    newProduct.description = item.description.replace(/[\n]/, "");
+    newProduct.price = item.price;
+    newProduct.priceFormated = item.priceFormated;
+    newProduct.quantity = item.quantity;
+    newProduct.image = item.image;
+    const savedProduct = await newProduct.save();
+
+    if (savedProduct) {
+      for (let [index, category] of categories.entries()) {
+        const findCategory = await Category.findOne({ name: category });
+
+        if (findCategory) {
+          const newProdCat = new ProdCat({
+            product: savedProduct._id,
+            category: findCategory._id
+          });
+
+          const savedProCat = await newProdCat.save();
+          savedProCat ? allProducts.push(savedProduct) : null;
+        }
+      }
+    } //if savedProduct
+  }
+  res.status(201).json(allProducts);
+};
 
 module.exports = {
   addCategory,
   addProduct,
   addShopping,
-  addProductByJson,
   getProductByCategory,
   getProducts,
   getProductsCat,
   getShopping,
-  searchProduct,
-  deleteTrash,
-  makePurchase
+  searchProductbyWords,
+  deleteProduct,
+  makePurchase,
+  updateProduct,
+  deleteAll,
+  addProductByJson
 };
