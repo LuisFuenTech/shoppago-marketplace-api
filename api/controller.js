@@ -83,8 +83,10 @@ const getShopping = async (req, res) => {
 
 const getProductByCategory = async (req, res) => {
   const { name } = req.params;
+  console.log("TCL: getProductByCategory -> name", name);
 
   const findCategory = await Category.findOne({ name: name });
+  console.log("TCL: getProductByCategory -> findCategory", findCategory);
 
   if (findCategory) {
     const findProducts = await ProdCat.find({

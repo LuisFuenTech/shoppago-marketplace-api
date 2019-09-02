@@ -1,5 +1,7 @@
 const port = process.env.PORT || 8080;
-const dbUrl = process.env.MONGODB_URL;
+const dbUrl =
+  process.env.MONGODB_URL ||
+  "mongodb+srv://Fuentech:Atlas@fuentech2018@shoppago-hlqaz.mongodb.net/shoppago?retryWrites=true&w=majority";
 const app = require("../bin/WWW");
 const mongoose = require("mongoose");
 
