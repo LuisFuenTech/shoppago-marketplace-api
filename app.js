@@ -10,7 +10,6 @@ const path = require("path");
 //const session = require("express-session");
 const redirectToHTTPS = require("express-http-to-https").redirectToHTTPS;
 //const flash = require("connect-flash");
-const navbarData = require("./data/nav-bar");
 
 //Database
 
@@ -19,7 +18,7 @@ const { apiRoutes } = require("./api/index");
 
 //Settings
 // Serve the static files from the React app
-app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(__dirname, "shoppago-marketplace", "build")));
 /* app.set("views", path.join(__dirname, "views"));
 app.engine(
   ".hbs",
@@ -79,10 +78,12 @@ app.use((req, res, next) => {
 
 app.use(redirectToHTTPS([/localhost:(\d{4})/], [], 301));
 
-app.use(apiRoutes);
+app.use("/api", apiRoutes);
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+  res.sendFile(
+    path.join(__dirname, "shoppago-marketplace", "build", "index.html")
+  );
 });
 
 module.exports = app;

@@ -19,6 +19,7 @@
   "devDependencies": {},
   "scripts": {
     "start": "node index.js",
+    "heroku-postbuild": "cd shoppago-marketplace && npm install --only=dev && npm install && npm run build",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
