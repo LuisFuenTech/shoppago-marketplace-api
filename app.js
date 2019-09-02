@@ -85,6 +85,6 @@ app.get("*", (req, res) => {
 });
 
 console.log("__dirname", __dirname);
-console.log("Path", path.join(__dirname, "shoppago-market", "build"));
+console.log("Path", path.join(__dirname, "shoppago", "build"));
 
 module.exports = app;
