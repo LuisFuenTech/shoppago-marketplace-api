@@ -31,12 +31,22 @@ class App extends Component {
     emailSent: false
   };
 
-  componentWillUpdate() {
+  componentWillMount() {
     localStorage.getItem("productsCart") &&
       this.setState({
         productsCart: JSON.parse(localStorage.getItem("productsCart")),
         shoppingCounter: JSON.parse(localStorage.getItem("productsCart")).length
       });
+  }
+
+  //WARNING! To be deprecated in React v17. Use componentDidUpdate instead.
+  //WARNING! To be deprecated in React v17. Use componentDidUpdate instead.
+  componentWillUpdate(nextProps, nextState) {
+    localStorage.setItem("productList", JSON.stringify(nextState.productList));
+    localStorage.setItem(
+      "productsCart",
+      JSON.stringify(nextState.productsCart)
+    );
   }
 
   async componentDidMount() {
