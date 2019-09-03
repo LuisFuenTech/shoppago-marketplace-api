@@ -4,6 +4,8 @@ Shoppago is a web application that simulate a real marketplace, a site where you
 
 For a general view, checkout the application just clicking rigth [here](https://shoppago-market.herokuapp.com/). You're still here, I see you miss something, well I put de link again over [https://shoppago-market.herokuapp.com/](https://shoppago-market.herokuapp.com/)
 
+This app consume the [Shoppago Marketplace API](https://github.com/LuisFuenTech/shoppago-marketplace-api)
+
 ### Installing
 
 For running this application, you need:
@@ -17,6 +19,7 @@ For running this application, you need:
 This API was build with:
 
 - [React JS](https://reactjs.org/). The client application reside into Node App, when a request is invalid.
+  This app use localStorage from your browser
 
 ### Developed with ♥ by Luis Fuentes
 

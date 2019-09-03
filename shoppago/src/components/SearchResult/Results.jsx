@@ -11,20 +11,20 @@ class Result extends Component {
             {results &&
               results.map((result, index) => {
                 return (
-                  <li className="miniature list-group-item-action">
+                  <li className="miniature">
                     <center>
-                      <img
-                        alt=""
-                        style={{ width: "250px", height: "250px" }}
-                        className="img-thumb"
-                        src={result.image || ""}
-                        rounded
-                      ></img>
                       <Link
                         style={{ "text-decoration": "none", color: "#692a70" }}
                         key={index}
                         to={`/product-detail/category/${result._id || ""}`}
                       >
+                        <img
+                          alt=""
+                          style={{ width: "250px", height: "250px" }}
+                          className="img-thumb"
+                          src={result.image || ""}
+                          rounded
+                        ></img>
                         <h4>{result.name}</h4>
                       </Link>
                       <h5 className="mb-2 text-muted">{result.price || ""}</h5>

@@ -10,21 +10,21 @@ class Category extends Component {
           {products &&
             products.map((product, index) => {
               return (
-                <li className="miniature list-group-item-action">
+                <li className="miniature ">
                   <center>
-                    <img
-                      alt=""
-                      style={{ width: "250px", height: "250px" }}
-                      className="img-thumb"
-                      src={product.product.image || ""}
-                      rounded
-                    ></img>
                     <Link
                       style={{ "text-decoration": "none", color: "#692a70" }}
                       key={index}
                       to={`/product-detail/category/${product.product._id ||
                         ""}`}
                     >
+                      <img
+                        alt=""
+                        style={{ width: "250px", height: "250px" }}
+                        className="img-thumb"
+                        src={product.product.image || ""}
+                        rounded
+                      ></img>
                       <h4>{product.product.name}</h4>
                     </Link>
                     <h5 className="mb-2 text-muted">

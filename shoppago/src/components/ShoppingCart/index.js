@@ -10,32 +10,25 @@ class ShoppingCart extends Component {
 
     return Boolean(products.length) ? (
       <Container fluid>
-        <Row>
-          <Col>
-            <ul className="list-group">
-              {products &&
-                products.map((product, index) => {
-                  return (
-                    <li
-                      className="miniature d-flex justify-content-between align-items-center"
-                      key={index}
-                    >
-                      <Product
-                        key={index}
-                        product={product}
-                        onRemoveItem={() => onRemoveItem(product)}
-                        onIncrement={() => onIncrement(product)}
-                        onDecrement={() => onDecrement(product)}
-                      />
-                    </li>
-                  );
-                })}
-            </ul>
-          </Col>
-          <Col xs={3}>
-            <SubTotal products={products} />
-          </Col>
-        </Row>
+        <ul className="miniature-list">
+          {products &&
+            products.map((product, index) => {
+              return (
+                <li className="miniature" key={index}>
+                  <Product
+                    key={index}
+                    product={product}
+                    onRemoveItem={() => onRemoveItem(product)}
+                    onIncrement={() => onIncrement(product)}
+                    onDecrement={() => onDecrement(product)}
+                  />
+                </li>
+              );
+            })}
+        </ul>
+        <Col xs={3}>
+          <SubTotal products={products} />
+        </Col>
       </Container>
     ) : (
       <Message message={"Cart is empty!"} />

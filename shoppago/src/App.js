@@ -31,19 +31,20 @@ class App extends Component {
     emailSent: false
   };
 
+  componentWillUpdate() {
+    localStorage.getItem("productsCart") &&
+      this.setState({
+        productsCart: JSON.parse(localStorage.getItem("productsCart")),
+        shoppingCounter: JSON.parse(localStorage.getItem("productsCart")).length
+      });
+  }
+
   async componentDidMount() {
     if (!localStorage.getItem("productList")) {
       try {
         const { data } = await axios.get("/api/product/products");
 
         if (data) this.setState({ productList: data });
-
-        localStorage.getItem("productsCart") &&
-          this.setState({
-            productsCart: JSON.parse(localStorage.getItem("productsCart")),
-            shoppingCounter: JSON.parse(localStorage.getItem("productsCart"))
-              .length
-          });
       } catch (error) {
         console.log(error);
       }
