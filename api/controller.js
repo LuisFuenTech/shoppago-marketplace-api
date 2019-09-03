@@ -177,9 +177,9 @@ const makePurchase = async (req, res) => {
 
   try {
     await MailSender.sendMail(email, subtotal, shoppingCart);
-    res.status(200).json(updated);
+    res.status(200).send("Mail sent");
   } catch (error) {
-    res.status(400).json({ error });
+    res.status(400).send("error: " + error);
   }
 };
 

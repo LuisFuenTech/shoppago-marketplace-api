@@ -11,9 +11,9 @@ class SubTotal extends Component {
   };
 
   handleSubmit = async event => {
-    //event.preventDefault();
+    event.preventDefault();
     try {
-      const { status } = await axios.post(
+      const response = await axios.post(
         "https://shoppago-market.herokuapp.com/api/shopping/buy",
         {
           cart: localStorage.getItem("productsCart"),
@@ -21,7 +21,7 @@ class SubTotal extends Component {
           email: this.state.email
         }
       );
-      alert("statusCode", status);
+      alert("response", JSON.stringify(response));
       this.props.history.push("/mail-sent");
     } catch (error) {
       alert("Error", error);

@@ -22,7 +22,7 @@ class NotFound extends Component {
           <br></br>
           <Link to="/">
             <button className="btn btn-lg custom-button ">
-              Let's go home, I'll bring you coffee
+              Let's go home, I'll bring you coffee :')
             </button>
           </Link>
         </center>
