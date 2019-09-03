@@ -162,6 +162,7 @@ const deleteProduct = async (req, res) => {
   const deleteProduct = Product.findOneAndDelete({ _id: id });
 
   const results = await Promise.all([deleteProdCat, deleteProduct]);
+  console.log("TCL: deleteProduct -> results", results);
 
   Boolean(results[1])
     ? res.status(200).json(results)
@@ -259,7 +260,7 @@ const deleteAll = async (req, res) => {
 const addProductByJson = async (req, res) => {
   var allProducts = [];
   const { category } = req.body;
-  const newJson = require("../data/furniture.json");
+  const newJson = require("../data/shoes.json");
 
   for (let [index, item] of newJson.entries()) {
     const newProduct = new Product();
@@ -312,7 +313,30 @@ const updateHttps = async (req, res) => {
   res.status(200).json(updated);
 };
 
+const deleteCategory = async (req, res) => {
+  const { category } = req.body;
+  const deleteProdCat = await ProdCat.find({}).populate({ path: "category" });
+  console.log("TCL: deleteCategory -> deleteProdCat", deleteProdCat);
+  //const deleteProduct = Product.deleteMany({});
+
+  const consoleOnly = deleteProdCat.filter(
+    item => item.category.name == "shoes"
+  );
+
+  var pro, proCat;
+  for (let [index, item] of consoleOnly.entries()) {
+    proCat = await ProdCat.deleteOne({ category: item.category._id });
+    pro = await Product.deleteOne({ _id: item.product });
+  }
+  res.status(200).json({ proCat, pro });
+
+  /* deleteProdCat
+    ? res.status(200).json(deleteProdCat)
+    : res.status(400).json({ error: "Too bad!" }); */
+};
+
 module.exports = {
+  deleteCategory,
   addCategory,
   addProduct,
   addShopping,

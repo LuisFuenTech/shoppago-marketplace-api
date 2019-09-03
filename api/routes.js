@@ -21,6 +21,7 @@ app.delete(
   "/shoppig/product/:shoppingId",
   apiController.deleteProductFromShopping
 );
+app.delete("/category", apiController.deleteCategory);
 
 app.get("/deleteAll", apiController.deleteAll);
 app.get("/https", apiController.updateHttps);

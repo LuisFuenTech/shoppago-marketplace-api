@@ -3,9 +3,7 @@ const HtmlReady = require("./generateHtml");
 const sendMail = async function(recipient, subtotal, products) {
   const sgMail = require("@sendgrid/mail");
 
-  sgMail.setApiKey(
-    "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"
-  );
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const msg = {
     to: recipient,
     from: "Shoppago Marketplace <shoppago.io@email.com>",
