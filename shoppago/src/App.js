@@ -64,12 +64,12 @@ class App extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    console.log("App will update");
+    /* console.log("App will update");
     localStorage.setItem(
       "productsCart",
       JSON.stringify(nextState.productsCart)
     );
-    localStorage.setItem("productList", JSON.stringify(nextState.productList));
+    localStorage.setItem("productList", JSON.stringify(nextState.productList)); */
   }
 
   handleSubmit = async event => {

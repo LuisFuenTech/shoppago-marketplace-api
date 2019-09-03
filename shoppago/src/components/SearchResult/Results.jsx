@@ -6,48 +6,40 @@ class Result extends Component {
   render() {
     const { results } = this.props;
     return (
-      <Container fluid>
-        <ul className="list-group">
-          {results &&
-            results.map((result, index) => {
-              return (
-                <li className="list-group-item list-group-item-action">
-                  <Row>
-                    <Col xs={6} md={4}>
+      <div className="container-fluid">
+        <center>
+          <ul className="miniature-list">
+            {results &&
+              results.map((result, index) => {
+                return (
+                  <li className="miniature list-group-item-action">
+                    <center>
                       <img
-                        alt="..."
-                        src={result.image}
-                        className="rounded img-thumbnail"
+                        style={{ width: "250px", height: "250px" }}
+                        className="img-thumb"
+                        src={product.image || ""}
+                        rounded
                       ></img>
-                    </Col>
-                    <Col xs={6} md={4}>
-                      <Card style={{ width: "18rem" }}>
-                        <Card.Body>
-                          <Card.Title>
-                            <Link to={`/product-detail/${result._id}`}>
-                              {result.description
-                                .split(" ")
-                                .slice(0, 3)
-                                .join(" ")}
-                            </Link>
-                          </Card.Title>
-                          <Card.Subtitle className="mb-2 text-muted">
-                            {result.price}
-                          </Card.Subtitle>
-                          <Card.Text>{result.description}</Card.Text>
-                          <hr className="my-4"></hr>
-                          <Card.Subtitle className="mb-2 text-muted">
-                            Stock: {result.quantity || ""}
-                          </Card.Subtitle>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  </Row>
-                </li>
-              );
-            })}
-        </ul>
-      </Container>
+                      <Link
+                        style={{ "text-decoration": "none", color: "#692a70" }}
+                        key={index}
+                        to={`/product-detail/category/${product._id || ""}`}
+                      >
+                        <h4>{product.name}</h4>
+                      </Link>
+                      <h5 className="mb-2 text-muted">{product.price || ""}</h5>
+                      <p>{product.description || ""}</p>
+                      <hr className="my-4"></hr>
+                      <p className="mb-2 text-muted">
+                        Stock: {product.quantity || ""}
+                      </p>
+                    </center>
+                  </li>
+                );
+              })}
+          </ul>
+        </center>
+      </div>
     );
   }
 }

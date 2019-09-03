@@ -17,7 +17,7 @@ class ShoppingCart extends Component {
                 products.map((product, index) => {
                   return (
                     <li
-                      className="list-group-item d-flex justify-content-between align-items-center"
+                      className="miniature d-flex justify-content-between align-items-center"
                       key={index}
                     >
                       <Product
