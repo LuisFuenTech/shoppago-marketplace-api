@@ -13,7 +13,7 @@ class Header extends Component {
   }
 
   render() {
-    const { items, categories, counter, onChange, onSubmit } = this.props;
+    const { items, counter, onChange, onSubmit } = this.props;
 
     return (
       <div className="sticky-top custom-nav">

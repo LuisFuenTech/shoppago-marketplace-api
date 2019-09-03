@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Card, Image, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 class Product extends Component {
   state = {};
@@ -9,6 +9,7 @@ class Product extends Component {
       <div className="container-fluid">
         <center>
           <img
+            alt=""
             style={{ width: "250px", height: "250px" }}
             className="img-thumb"
             src={product.image || ""}

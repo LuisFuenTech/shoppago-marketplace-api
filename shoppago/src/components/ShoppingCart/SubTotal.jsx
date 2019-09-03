@@ -13,7 +13,7 @@ class SubTotal extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     try {
-      const response = await axios.post(
+      await axios.post(
         "https://shoppago-market.herokuapp.com/api/shopping/buy",
         {
           cart: localStorage.getItem("productsCart"),

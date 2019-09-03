@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 class Result extends Component {
@@ -15,23 +14,24 @@ class Result extends Component {
                   <li className="miniature list-group-item-action">
                     <center>
                       <img
+                        alt=""
                         style={{ width: "250px", height: "250px" }}
                         className="img-thumb"
-                        src={product.image || ""}
+                        src={results.image || ""}
                         rounded
                       ></img>
                       <Link
                         style={{ "text-decoration": "none", color: "#692a70" }}
                         key={index}
-                        to={`/product-detail/category/${product._id || ""}`}
+                        to={`/product-detail/category/${results._id || ""}`}
                       >
-                        <h4>{product.name}</h4>
+                        <h4>{results.name}</h4>
                       </Link>
-                      <h5 className="mb-2 text-muted">{product.price || ""}</h5>
-                      <p>{product.description || ""}</p>
+                      <h5 className="mb-2 text-muted">{results.price || ""}</h5>
+                      <p>{results.description || ""}</p>
                       <hr className="my-4"></hr>
                       <p className="mb-2 text-muted">
-                        Stock: {product.quantity || ""}
+                        Stock: {results.quantity || ""}
                       </p>
                     </center>
                   </li>

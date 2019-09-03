@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Container, Row, Col, Image, Card } from "react-bootstrap";
 
 class Category extends Component {
   render() {
@@ -14,6 +13,7 @@ class Category extends Component {
                 <li className="miniature list-group-item-action">
                   <center>
                     <img
+                      alt=""
                       style={{ width: "250px", height: "250px" }}
                       className="img-thumb"
                       src={product.product.image || ""}

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Image } from "react-bootstrap";
 import Message from "./Message";
 
 class Detail extends Component {
