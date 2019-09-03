@@ -9,30 +9,32 @@ class ShoppingCart extends Component {
     const { onRemoveItem, onIncrement, onDecrement, products } = this.props;
 
     return Boolean(products.length) ? (
-      <Container fluid>
-        <Row>
-          <ul className="list-group">
-            {products &&
-              products.map((product, index) => {
-                return (
-                  <li className="list-group-item" key={index}>
-                    <Product
-                      key={index}
-                      product={product}
-                      onRemoveItem={() => onRemoveItem(product)}
-                      onIncrement={() => onIncrement(product)}
-                      onDecrement={() => onDecrement(product)}
-                    />
-                  </li>
-                );
-              })}
-          </ul>
+      <center>
+        <Container fluid>
+          <Row>
+            <ul className="list-group">
+              {products &&
+                products.map((product, index) => {
+                  return (
+                    <li className="list-group-item" key={index}>
+                      <Product
+                        key={index}
+                        product={product}
+                        onRemoveItem={() => onRemoveItem(product)}
+                        onIncrement={() => onIncrement(product)}
+                        onDecrement={() => onDecrement(product)}
+                      />
+                    </li>
+                  );
+                })}
+            </ul>
 
-          <Col xs={3}>
-            <SubTotal products={products} />
-          </Col>
-        </Row>
-      </Container>
+            <Col xs={3}>
+              <SubTotal products={products} />
+            </Col>
+          </Row>
+        </Container>
+      </center>
     ) : (
       <Message message={"Cart is empty!"} />
     );
