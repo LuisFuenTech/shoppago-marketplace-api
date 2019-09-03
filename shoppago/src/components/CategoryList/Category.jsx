@@ -13,10 +13,10 @@ class Category extends Component {
               return (
                 <li className="miniature list-group-item-action">
                   <img
-                  className="img-thumb"
+                    className="img-thumb"
                     src={product.product.image || ""}
-                    rounded>
-                  </img>
+                    rounded
+                  ></img>
                   <Link
                     key={index}
                     to={`/product-detail/category/${product.product._id || ""}`}
@@ -26,7 +26,7 @@ class Category extends Component {
                   <h5 className="mb-2 text-muted">
                     {product.product.price || ""}
                   </h5>
-                  <p>{product.product.description || ""}</>
+                  <p>{product.product.description || ""}</p>
                   <hr className="my-4"></hr>
                   <p className="mb-2 text-muted">
                     Stock: {product.product.quantity || ""}
