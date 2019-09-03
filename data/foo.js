@@ -30,7 +30,7 @@ function getAlibaba(items) {
     let newItem = {};
 
     newItem.image =
-      "http:" +
+      "https:" +
       item.querySelector(".offer-image-box").childNodes[3].getAttribute("src");
     newItem.description = item
       .querySelector(".offer-image-box")
@@ -59,7 +59,7 @@ let allProducts = alibaba.map(item => {
   let newItem = {};
 
   newItem.image =
-    "http:" +
+    "https:" +
     item.querySelector(".offer-image-box").childNodes[3].getAttribute("src");
   newItem.description = item
     .querySelector(".offer-image-box")

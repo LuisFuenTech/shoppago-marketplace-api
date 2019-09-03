@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { NavLink, Link } from "react-router-dom";
-import { InputGroup, DropdownButton, Dropdown } from "react-bootstrap";
 
 class Header extends Component {
   state = {

@@ -18,8 +18,8 @@ export default [
       "https://res.cloudinary.com/test-dev/image/upload/v1567438885/16_Xperia_M4_Aqua_Group_fb_blog-097a91fc84be2c564c8ff371d4ed3b23_zkv4am.jpg"
   },
   {
-    name: "Furnitures",
-    url: "/furnitures",
+    name: "Furniture",
+    url: "/furniture",
     image:
       "https://res.cloudinary.com/test-dev/image/upload/v1567438598/2271-TABLE-1331-CHAIR-1332-BENCH_nz1kjx.png"
   },
@@ -31,6 +31,7 @@ export default [
   },
   {
     name: "Health",
+    url: "/health",
     image:
       "https://res.cloudinary.com/test-dev/image/upload/v1567438213/Self-care-300x300_r1yxcp.jpg"
   },

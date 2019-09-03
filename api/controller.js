@@ -54,27 +54,47 @@ const addProduct = async (req, res) => {
   } else res.status(500).send("Operation failed");
 };
 
+const addProductToShopping = async (req, res) => {
+  const { productId, shoppingId } = req.body;
+  const findShopping = await Shopping.findById(shoppingId);
+  console.log("TCL: addProductToShopping -> findShopping", findShopping);
+
+  if (findShopping) {
+    /* const products = [...findShopping.products];
+    products.push(productId);
+    findShopping.products = products; */
+
+    findShopping.products.push(mongoose.Types.ObjectId(productId));
+
+    const shoppingUpdated = await Shopping.findByIdAndUpdate(
+      shoppingId,
+      findShopping,
+      { new: true }
+    );
+
+    shoppingUpdated
+      ? res.status(201).json(shoppingUpdated)
+      : res.status(404).send("Something went wrong!");
+  } else res.status(404).json({ error: "Shopping cart not found" });
+};
+
 const addShopping = async (req, res) => {
-  const { productsId } = req.body;
-  const newShopping = new Shopping();
+  const newShopping = new Shopping({ products: [] });
+  const shoppingCreated = await newShopping.save();
 
-  productsId.forEach(id => {
-    newShopping.products.push(mongoose.Types.ObjectId(id));
-  });
-
-  const savedShopping = await newShopping.save();
-
-  if (savedShopping) return res.status(201).json(savedShopping);
-  else res.status(500).send("Something went wrong!");
+  shoppingCreated
+    ? res.status(201).json(shoppingCreated._id)
+    : res.status(400).json({ error: "Something went wrong" });
 };
 
 const getShopping = async (req, res) => {
-  const { shoppingId } = req.params;
-  const findShopping = await Shopping.findById(shoppingId).populate({
-    path: "products",
-    select: "-__v",
-    populate: { path: "product", select: "-__v" }
+  const { id } = req.params;
+  console.log("TCL: getShopping -> shoppingId", id);
+  const findShopping = await Shopping.findById(id).populate({
+    path: "ProductCategory",
+    select: "-__v"
   });
+  console.log("TCL: getShopping -> findShopping", findShopping);
 
   findShopping
     ? res.status(200).json(findShopping)
@@ -100,6 +120,16 @@ const getProductByCategory = async (req, res) => {
       ? res.status(200).json(findProducts)
       : res.status(404).send(`Category ${category} is empty`);
   } else res.status(404).send(`Category ${category} not found`);
+};
+
+const getProduct = async (req, res) => {
+  const { id } = req.params;
+
+  const findProduct = await Product.findById(id);
+
+  findProduct
+    ? res.status(200).json(findProduct)
+    : res.status(404).json({ error: "Product not found" });
 };
 
 const getProducts = async (req, res) => {
@@ -131,12 +161,33 @@ const deleteProduct = async (req, res) => {
   const deleteProdCat = ProdCat.findOneAndDelete({ product: id });
   const deleteProduct = Product.findOneAndDelete({ _id: id });
 
-  try {
-    const results = await Promise.all([deleteProdCat, deleteProduct]);
-    res.status(200).json(results);
-  } catch (error) {
-    res.status(400).send("Opetation has failed", error);
-  }
+  const results = await Promise.all([deleteProdCat, deleteProduct]);
+
+  Boolean(results[1])
+    ? res.status(200).json(results)
+    : res.status(400).send({ error: "Product already removed" });
+};
+
+const deleteProductFromShopping = async (req, res) => {
+  const { shoppingId } = req.params;
+  const { productId } = req.query;
+
+  const findShopping = await Shopping.findById(shoppingId);
+
+  if (findShopping) {
+    const newProductsList = findShopping.products.filter(
+      item => item._id != productId
+    );
+    const shoppingUpdated = await Shopping.findByIdAndUpdate(
+      shoppingId,
+      { products: newProductsList },
+      { new: true }
+    );
+
+    shoppingUpdated
+      ? res.status(200).json({ shoppingUpdated })
+      : res.status(500).json({ error: "Couldn't process" });
+  } else res.status(404).json({ error: "Shopping not found" });
 };
 
 const searchProductbyWords = async (req, res) => {
@@ -200,14 +251,15 @@ const deleteAll = async (req, res) => {
   await Product.deleteMany({});
   await ProdCat.deleteMany({});
   await Shopping.deleteMany({});
+  await Category.deleteMany({});
 
   res.status(200).send("No back again");
 };
 
 const addProductByJson = async (req, res) => {
   var allProducts = [];
-  const { categories } = req.body;
-  const newJson = require("../data/toys.json");
+  const { category } = req.body;
+  const newJson = require("../data/furniture.json");
 
   for (let [index, item] of newJson.entries()) {
     const newProduct = new Product();
@@ -222,23 +274,21 @@ const addProductByJson = async (req, res) => {
     newProduct.priceFormated = item.priceFormated;
     newProduct.quantity = item.quantity;
     newProduct.image = item.image;
-    const savedProduct = await newProduct.save();
+    const savedProduct = newProduct.save();
+    const findCategory = await Category.findOne({ name: category });
 
-    if (savedProduct) {
-      for (let [index, category] of categories.entries()) {
-        const findCategory = await Category.findOne({ name: category });
+    const result = await Promise.all([savedProduct, findCategory]);
+    console.log("TCL: result", result);
 
-        if (findCategory) {
-          const newProdCat = new ProdCat({
-            product: savedProduct._id,
-            category: findCategory._id
-          });
+    if (Boolean(result[1])) {
+      const newProdCat = new ProdCat({
+        product: result[0].name != category ? result[0]._id : result[1],
+        category: result[0].name == category ? result[0]._id : result[1]
+      });
 
-          const savedProCat = await newProdCat.save();
-          savedProCat ? allProducts.push(savedProduct) : null;
-        }
-      }
-    } //if savedProduct
+      const savedProCat = await newProdCat.save();
+      savedProCat ? allProducts.push(savedProCat) : null;
+    } else res.status(500).json({ error: "Something went wrong" });
   }
   res.status(201).json(allProducts);
 };
@@ -266,12 +316,15 @@ module.exports = {
   addCategory,
   addProduct,
   addShopping,
+  addProductToShopping,
+  getProduct,
   getProductByCategory,
   getProducts,
   getProductsCat,
   getShopping,
   searchProductbyWords,
   deleteProduct,
+  deleteProductFromShopping,
   makePurchase,
   updateProduct,
   deleteAll,
