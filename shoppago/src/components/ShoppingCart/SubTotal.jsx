@@ -21,7 +21,6 @@ class SubTotal extends Component {
           email: this.state.email
         }
       );
-      alert("response", JSON.stringify(response));
       this.props.history.push("/mail-sent");
     } catch (error) {
       alert("Error", error);

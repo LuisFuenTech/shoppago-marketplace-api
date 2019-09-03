@@ -4,6 +4,14 @@ class MailSend extends Component {
   state = {};
 
   componentDidMount() {
+    localStorage.removeItem("productsCart");
+    localStorage.removeItem("productList");
+    localStorage.clear();
+  }
+
+  componentWillMount() {
+    localStorage.removeItem("productsCart");
+    localStorage.removeItem("productList");
     localStorage.clear();
   }
 
