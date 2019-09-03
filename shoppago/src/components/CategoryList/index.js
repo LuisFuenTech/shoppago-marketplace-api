@@ -13,7 +13,9 @@ class ProductList extends Component {
     if (this.state.category !== this.props.match.params.category) {
       const { category } = this.props.match.params;
       try {
-        const { data } = await axios.get(`/api/category/${category}`);
+        const { data } = await axios.get(
+          `https://shoppago-market.herokuapp.com/api/category/${category}`
+        );
 
         this.setState({ products: data, category: category });
       } catch (error) {}
@@ -23,7 +25,9 @@ class ProductList extends Component {
   async componentDidMount() {
     const { category } = this.props.match.params;
     try {
-      const { data } = await axios.get(`/api/category/${category}`);
+      const { data } = await axios.get(
+        `https://shoppago-market.herokuapp.com/api/category/${category}`
+      );
 
       this.setState({ products: data, category: category });
     } catch (error) {}
