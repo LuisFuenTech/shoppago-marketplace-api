@@ -33,7 +33,9 @@ class ProductList extends Component {
     const { products, category } = this.state;
 
     return Boolean(products.length) ? (
-      <Category products={products} category={category} />
+      <div align="center">
+        <Category products={products} category={category} />
+      </div>
     ) : (
       <Loading message={"Meanwhile in a galaxy far far away..."} />
     );

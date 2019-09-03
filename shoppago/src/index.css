@@ -69,6 +69,7 @@ code {
 
 .miniature {
   width: 269px !important;
+  height: 269px !important;
   display: inline-block !important;
   margin-bottom: 5px !important;
   margin-left: 2px !important;

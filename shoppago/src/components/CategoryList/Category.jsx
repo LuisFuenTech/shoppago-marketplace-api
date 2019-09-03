@@ -12,26 +12,31 @@ class Category extends Component {
             products.map((product, index) => {
               return (
                 <li className="miniature list-group-item-action">
-                  <img
-                    className="img-thumb"
-                    src={product.product.image || ""}
-                    rounded
-                  ></img>
-                  <Link
-                    key={index}
-                    to={`/product-detail/category/${product.product._id || ""}`}
-                  >
-                    <h4>{product.product.name}</h4>
-                  </Link>
-                  <h5 className="mb-2 text-muted">
-                    {product.product.price || ""}
-                  </h5>
-                  <p>{product.product.description || ""}</p>
-                  <hr className="my-4"></hr>
-                  <p className="mb-2 text-muted">
-                    Stock: {product.product.quantity || ""}
-                  </p>
-                  <h5>{`Category: ${category}`}</h5>
+                  <center>
+                    <img
+                      style={{ width: "250px", height: "250px" }}
+                      className="img-thumb"
+                      src={product.product.image || ""}
+                      rounded
+                    ></img>
+                    <Link
+                      style={{ "text-decoration": "none", color: "#692a70" }}
+                      key={index}
+                      to={`/product-detail/category/${product.product._id ||
+                        ""}`}
+                    >
+                      <h4>{product.product.name}</h4>
+                    </Link>
+                    <h5 className="mb-2 text-muted">
+                      {product.product.price || ""}
+                    </h5>
+                    <p>{product.product.description || ""}</p>
+                    <hr className="my-4"></hr>
+                    <p className="mb-2 text-muted">
+                      Stock: {product.product.quantity || ""}
+                    </p>
+                    <h5>{`Category: ${category}`}</h5>
+                  </center>
                 </li>
               );
             })}
