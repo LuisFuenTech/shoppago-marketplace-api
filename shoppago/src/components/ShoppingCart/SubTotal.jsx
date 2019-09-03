@@ -37,7 +37,6 @@ class SubTotal extends Component {
 
   handleOnChange = event => {
     this.setState({ email: event.target.value });
-    console.log(this.state.email);
   };
 
   handleClick = () => {
@@ -45,7 +44,6 @@ class SubTotal extends Component {
   };
 
   render() {
-    console.log("Render Shopping");
     const { products } = this.props;
 
     if (this.state.redirectToHome) {

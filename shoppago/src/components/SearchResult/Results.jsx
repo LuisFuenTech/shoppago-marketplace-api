@@ -17,21 +17,21 @@ class Result extends Component {
                         alt=""
                         style={{ width: "250px", height: "250px" }}
                         className="img-thumb"
-                        src={results.image || ""}
+                        src={result.image || ""}
                         rounded
                       ></img>
                       <Link
                         style={{ "text-decoration": "none", color: "#692a70" }}
                         key={index}
-                        to={`/product-detail/category/${results._id || ""}`}
+                        to={`/product-detail/category/${result._id || ""}`}
                       >
-                        <h4>{results.name}</h4>
+                        <h4>{result.name}</h4>
                       </Link>
-                      <h5 className="mb-2 text-muted">{results.price || ""}</h5>
-                      <p>{results.description || ""}</p>
+                      <h5 className="mb-2 text-muted">{result.price || ""}</h5>
+                      <p>{result.description || ""}</p>
                       <hr className="my-4"></hr>
                       <p className="mb-2 text-muted">
-                        Stock: {results.quantity || ""}
+                        Stock: {result.quantity || ""}
                       </p>
                     </center>
                   </li>

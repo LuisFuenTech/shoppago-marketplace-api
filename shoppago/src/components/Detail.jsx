@@ -19,17 +19,12 @@ class Detail extends Component {
   };
 
   render() {
-    console.log("Detail render");
-
     const { onAddItem, products } = this.props;
 
-    console.log(this.props);
     const product = this.getProduct(
       this.props.products,
       this.props.match.params._id
     );
-
-    console.log("product", product);
 
     return (
       <div>

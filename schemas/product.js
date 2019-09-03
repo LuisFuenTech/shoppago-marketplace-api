@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
-const { Category } = require("./index");
 
+//Model for product
 const productSchema = new Schema(
   {
     name: { type: String, require: true },
@@ -8,8 +8,7 @@ const productSchema = new Schema(
     price: { type: String, require: true },
     priceFormated: { type: Number, require: true },
     quantity: { type: Number, require: true },
-    //categories: [Category],
-    image: { type: String, require: true }
+    image: { type: String, require: false }
   },
   {
     timestamps: true

@@ -1,5 +1,6 @@
 const HtmlReady = require("./generateHtml");
 
+//Using SendGrid API for sending emails
 const sendMail = async function(recipient, subtotal, products) {
   const sgMail = require("@sendgrid/mail");
 
@@ -14,10 +15,8 @@ const sendMail = async function(recipient, subtotal, products) {
 
   try {
     await mailResponse(sgMail, msg);
-    console.log("Success:", recipient);
     return true;
   } catch (error) {
-    console.log({ error: error });
     throw Error(error);
   }
 };

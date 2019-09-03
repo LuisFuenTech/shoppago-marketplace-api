@@ -1,18 +1,29 @@
 const mongoose = require("mongoose");
-const { Product, ProdCat, Category, Shopping } = require("../schemas/index");
 const MailSender = require("../services/sendMail");
+const { Product, ProdCat, Category, Shopping } = require("../schemas/index");
 
+/*
+  This function add a new category using a name provided for user.
+  return a json with the object saved¿
+*/
 const addCategory = async (req, res) => {
   const { name } = req.body;
   const newCategory = new Category({ name: name.toLowerCase() });
+  const categorySaved = await newCategory.save();
 
-  const saved = await newCategory.save();
-
-  saved
-    ? res.status(201).json({ message: "Category added", item: saved })
+  //If the object was successfully added, return 201 code
+  categorySaved
+    ? res.status(201).json({ message: "Category added", item: categorySaved })
     : res.status(500).send("Operation failed");
 };
 
+/*
+  This function is used for add a new product, using the data
+  provided for user.
+  Important: The category given have to be created first, because
+  and intermedite object is create, th eone who store the id of the
+  category and product created
+*/
 const addProduct = async (req, res) => {
   const prodCat = [];
   const {
@@ -22,9 +33,13 @@ const addProduct = async (req, res) => {
     priceFormated,
     quantity,
     image,
-    categories
+    category
   } = req.body;
 
+  /*
+  Creating a new producto, using regex for formating.
+  value image is the url of the product's image
+  */
   const newProduct = new Product({
     name: name,
     description: description,
@@ -34,36 +49,32 @@ const addProduct = async (req, res) => {
     image: image
   });
 
-  const savedProduct = await newProduct.save();
+  const savedProduct = newProduct.save();
+  const searchCategory = Category.findOne({ name: category });
 
-  if (savedProduct) {
-    for (let [index, category] of categories.entries()) {
-      const searchCategory = await Category.findOne({ name: category });
+  const result = await Promise.all([savedProduct, searchCategory]);
 
-      if (searchCategory) {
-        const newProdCat = new ProdCat({
-          product: savedProduct._id,
-          category: searchCategory._id
-        });
+  //Save reference if previous task is completed, comparing data given by Promise
+  if (result) {
+    const newProdCat = new ProdCat({
+      product: result[0].name != category ? result[0]._id : result[1],
+      category: result[0].name == category ? result[0]._id : result[1]
+    });
 
-        const savedProCat = await newProdCat.save();
-        if (savedProCat) prodCat.push(savedProCat);
-      }
-    }
+    const savedProCat = await newProdCat.save();
+    if (savedProCat) prodCat.push(savedProCat);
     res.status(201).json({ message: "Product added", items: prodCat });
   } else res.status(500).send("Operation failed");
 };
 
+/*
+  This function add a product into the Shopping Caer if this exixts
+*/
 const addProductToShopping = async (req, res) => {
   const { productId, shoppingId } = req.body;
   const findShopping = await Shopping.findById(shoppingId);
-  console.log("TCL: addProductToShopping -> findShopping", findShopping);
 
   if (findShopping) {
-    /* const products = [...findShopping.products];
-    products.push(productId);
-    findShopping.products = products; */
-
     findShopping.products.push(mongoose.Types.ObjectId(productId));
 
     const shoppingUpdated = await Shopping.findByIdAndUpdate(
@@ -78,35 +89,42 @@ const addProductToShopping = async (req, res) => {
   } else res.status(404).json({ error: "Shopping cart not found" });
 };
 
+/*
+  This cread a new shopping cart
+*/
 const addShopping = async (req, res) => {
   const newShopping = new Shopping({ products: [] });
   const shoppingCreated = await newShopping.save();
 
   shoppingCreated
-    ? res.status(201).json(shoppingCreated._id)
+    ? res
+        .status(201)
+        .json({ message: "Shopping cart created", shopping: shoppingCreated })
     : res.status(400).json({ error: "Something went wrong" });
 };
 
+/* 
+  This return a shopping cart (products inside) by its id
+*/
 const getShopping = async (req, res) => {
   const { id } = req.params;
-  console.log("TCL: getShopping -> shoppingId", id);
-  const findShopping = await Shopping.findById(id).populate({
-    path: "ProductCategory",
-    select: "-__v"
+  const findShopping = await Shopping.findOne({ _id: id }).populate({
+    path: "productcategories"
   });
-  console.log("TCL: getShopping -> findShopping", findShopping);
 
   findShopping
     ? res.status(200).json(findShopping)
     : res.status(404).send(`Shopping cart doesn't exist`);
 };
 
+/*
+  Operation recive a name, then looking for that category
+  and send all products related to that category
+*/
 const getProductByCategory = async (req, res) => {
   const { name } = req.params;
-  console.log("TCL: getProductByCategory -> name", name);
 
   const findCategory = await Category.findOne({ name: name });
-  console.log("TCL: getProductByCategory -> findCategory", findCategory);
 
   if (findCategory) {
     const findProducts = await ProdCat.find({
@@ -122,9 +140,9 @@ const getProductByCategory = async (req, res) => {
   } else res.status(404).send(`Category ${category} not found`);
 };
 
+//Getting the product by its id given via params
 const getProduct = async (req, res) => {
   const { id } = req.params;
-
   const findProduct = await Product.findById(id);
 
   findProduct
@@ -132,6 +150,7 @@ const getProduct = async (req, res) => {
     : res.status(404).json({ error: "Product not found" });
 };
 
+//Get the list of all products
 const getProducts = async (req, res) => {
   const findProducts = await Product.find({});
 
@@ -142,33 +161,37 @@ const getProducts = async (req, res) => {
     : res.status(404).send(`There's no prodcuts`);
 };
 
+//Get the data populated on product and category
 const getProductsCat = async (req, res) => {
   const findProducts = await ProdCat.find({}).populate({
     path: "product category",
     select: "-__V"
   });
 
-  console.log("Counts of Products/Category", findProducts.length);
-
   findProducts.length > 0
     ? res.status(200).json(findProducts)
-    : res.status(404).send(`There's no prodcuts`);
+    : res.status(404).send({ error: `There's no prodcuts` });
 };
 
+/*
+  Deleting a product using its id given via params.
+  Also delete de document product-category created
+*/
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
-  console.log("TCL: deleteProduct -> id", id);
   const deleteProdCat = ProdCat.findOneAndDelete({ product: id });
   const deleteProduct = Product.findOneAndDelete({ _id: id });
 
   const results = await Promise.all([deleteProdCat, deleteProduct]);
-  console.log("TCL: deleteProduct -> results", results);
 
   Boolean(results[1])
     ? res.status(200).json(results)
     : res.status(400).send({ error: "Product already removed" });
 };
 
+/*
+  Deleting a product from a shopping cart
+*/
 const deleteProductFromShopping = async (req, res) => {
   const { shoppingId } = req.params;
   const { productId } = req.query;
@@ -191,9 +214,17 @@ const deleteProductFromShopping = async (req, res) => {
   } else res.status(404).json({ error: "Shopping not found" });
 };
 
+/*
+  Searching products that match with the words
+  given via query string
+*/
 const searchProductbyWords = async (req, res) => {
   const { words } = req.query;
 
+  /*
+    For this operation, I creat a index type text on mongoDB,
+    pointing to the product description
+  */
   try {
     const productsFounded = await Product.find({
       $text: { $search: `${words}` }
@@ -207,6 +238,10 @@ const searchProductbyWords = async (req, res) => {
   }
 };
 
+/*
+  This make the updates when someone complete
+  the purchase. Then, send a email
+*/
 const makePurchase = async (req, res) => {
   const updated = [];
   const { cart, subtotal, email } = req.body;
@@ -217,6 +252,7 @@ const makePurchase = async (req, res) => {
     const { count } = product;
     const findProduct = await Product.findById(product._id);
 
+    //I need to decrement de stock of the product
     if (findProduct) {
       const updateProduct = await Product.findByIdAndUpdate(
         findProduct._id,
@@ -235,6 +271,10 @@ const makePurchase = async (req, res) => {
   }
 };
 
+/*
+  This one allow update any product, giving the data
+  and the id
+*/
 const updateProduct = async (req, res) => {
   const { id } = req.params;
   const changes = req.body;
@@ -244,99 +284,13 @@ const updateProduct = async (req, res) => {
   });
 
   productUpdated
-    ? res.status(200).json(productUpdated)
+    ? res
+        .status(200)
+        .json({ message: "Product updated", product: productUpdated })
     : res.status(400).send("Updated failed");
 };
 
-const deleteAll = async (req, res) => {
-  await Product.deleteMany({});
-  await ProdCat.deleteMany({});
-  await Shopping.deleteMany({});
-  await Category.deleteMany({});
-
-  res.status(200).send("No back again");
-};
-
-const addProductByJson = async (req, res) => {
-  var allProducts = [];
-  const { category } = req.body;
-  const newJson = require("../data/shoes.json");
-
-  for (let [index, item] of newJson.entries()) {
-    const newProduct = new Product();
-
-    newProduct.name = item.description
-      .replace(/[\n]/, "")
-      .split(" ")
-      .slice(0, 3)
-      .join(" ");
-    newProduct.description = item.description.replace(/[\n]/, "");
-    newProduct.price = item.price;
-    newProduct.priceFormated = item.priceFormated;
-    newProduct.quantity = item.quantity;
-    newProduct.image = item.image;
-    const savedProduct = newProduct.save();
-    const findCategory = await Category.findOne({ name: category });
-
-    const result = await Promise.all([savedProduct, findCategory]);
-    console.log("TCL: result", result);
-
-    if (Boolean(result[1])) {
-      const newProdCat = new ProdCat({
-        product: result[0].name != category ? result[0]._id : result[1],
-        category: result[0].name == category ? result[0]._id : result[1]
-      });
-
-      const savedProCat = await newProdCat.save();
-      savedProCat ? allProducts.push(savedProCat) : null;
-    } else res.status(500).json({ error: "Something went wrong" });
-  }
-  res.status(201).json(allProducts);
-};
-
-const updateHttps = async (req, res) => {
-  const updated = [];
-  const findProducts = await Product.find({});
-
-  if (findProducts.length > 0) {
-    for (let [index, item] of findProducts.entries()) {
-      const https = item.image.replace(/http:\/\//, "https://");
-      console.log(https);
-      const updateItem = await Product.findOneAndUpdate(
-        { _id: item._id },
-        { image: https },
-        { new: true }
-      );
-      updateItem ? updated.push(updateItem) : null;
-    }
-  }
-  res.status(200).json(updated);
-};
-
-const deleteCategory = async (req, res) => {
-  const { category } = req.body;
-  const deleteProdCat = await ProdCat.find({}).populate({ path: "category" });
-  console.log("TCL: deleteCategory -> deleteProdCat", deleteProdCat);
-  //const deleteProduct = Product.deleteMany({});
-
-  const consoleOnly = deleteProdCat.filter(
-    item => item.category.name == "shoes"
-  );
-
-  var pro, proCat;
-  for (let [index, item] of consoleOnly.entries()) {
-    proCat = await ProdCat.deleteOne({ category: item.category._id });
-    pro = await Product.deleteOne({ _id: item.product });
-  }
-  res.status(200).json({ proCat, pro });
-
-  /* deleteProdCat
-    ? res.status(200).json(deleteProdCat)
-    : res.status(400).json({ error: "Too bad!" }); */
-};
-
 module.exports = {
-  deleteCategory,
   addCategory,
   addProduct,
   addShopping,
@@ -350,8 +304,5 @@ module.exports = {
   deleteProduct,
   deleteProductFromShopping,
   makePurchase,
-  updateProduct,
-  deleteAll,
-  addProductByJson,
-  updateHttps
+  updateProduct
 };

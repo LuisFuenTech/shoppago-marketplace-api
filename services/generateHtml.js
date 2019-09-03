@@ -1,3 +1,4 @@
+//Creating the template for emails
 const generateHtml = (products, subtotal) => {
   let cards = "";
 

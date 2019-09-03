@@ -32,15 +32,7 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    console.log("App did mount");
-    /* if(!localStorage.getItem('productsCart')){
-
-    }else{
-
-    } */
-
     if (!localStorage.getItem("productList")) {
-      console.log("no productlist");
       try {
         const { data } = await axios.get("/api/product/products");
 
@@ -56,20 +48,10 @@ class App extends Component {
         console.log(error);
       }
     } else {
-      console.log("Using productList from localStorage");
       this.setState({
         productList: JSON.parse(localStorage.getItem("productList"))
       });
     }
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    /* console.log("App will update");
-    localStorage.setItem(
-      "productsCart",
-      JSON.stringify(nextState.productsCart)
-    );
-    localStorage.setItem("productList", JSON.stringify(nextState.productList)); */
   }
 
   handleSubmit = async event => {
@@ -79,17 +61,14 @@ class App extends Component {
       const { data } = await axios.get(
         `/api/product/search?words=${this.state.search}`
       );
-      console.log(data);
       this.setState({ searchResult: data });
       if (data) this.props.history.push("/result-list");
     } catch (error) {
-      console.log("Something went wrong with search results", error);
       this.props.history.push("/not-found");
     }
   };
 
   handleChange = event => {
-    console.log(event.target.value);
     this.setState({ search: event.target.value });
   };
 
@@ -109,7 +88,6 @@ class App extends Component {
     const products = [...this.state.productsCart];
     const index = products.indexOf(product);
     products[index].count += 1;
-    console.log(product);
 
     this.setState({
       productsCart: products
@@ -141,7 +119,6 @@ class App extends Component {
     });
   };
   render() {
-    console.log("App render");
     const {
       shoppingCounter,
       productsCart,

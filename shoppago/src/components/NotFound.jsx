@@ -4,13 +4,7 @@ import { Link } from "react-router-dom";
 class NotFound extends Component {
   state = {};
 
-  componentDidMount() {
-    console.log("Not found Did mount");
-  }
-
   render() {
-    console.log("Not found Render");
-
     return (
       <div className="jumbotron">
         <center>
