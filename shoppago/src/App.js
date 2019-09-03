@@ -147,15 +147,15 @@ class App extends Component {
     } = this.state;
 
     return (
-      <div className="container-fluid">
-        <React.Fragment>
-          <Header
-            items={navbar}
-            categories={categories}
-            counter={shoppingCounter}
-            onChange={this.handleChange}
-            onSubmit={this.handleSubmit}
-          />
+      <React.Fragment>
+        <Header
+          items={navbar}
+          categories={categories}
+          counter={shoppingCounter}
+          onChange={this.handleChange}
+          onSubmit={this.handleSubmit}
+        />
+        <div className="container-fluid">
           <Switch>
             <Route
               exact
@@ -215,8 +215,8 @@ class App extends Component {
             <Route path="*" component={NotFound} />
           </Switch>
           <Footer copyright="&copy; Shoppago Marketplace 2019" />
-        </React.Fragment>
-      </div>
+        </div>
+      </React.Fragment>
     );
   }
 }
