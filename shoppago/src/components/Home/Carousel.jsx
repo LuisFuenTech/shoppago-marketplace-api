@@ -9,7 +9,7 @@ const CarouselHome = () => {
         <img
           style={{ height: "1024px", width: "720px" }}
           className="d-block w-100 h-25"
-          src="https://res.cloudinary.com/test-dev/image/upload/v1567446287/descarga_mryi4y.jpg"
+          src="https://res.cloudinary.com/test-dev/image/upload/c_scale,h_785,w_1920/v1567446287/descarga_mryi4y.jpg"
           alt="First slide"
         />
         <Carousel.Caption>
@@ -45,7 +45,7 @@ const CarouselHome = () => {
       <Carousel.Item>
         <img
           className="d-block w-100"
-          src="https://res.cloudinary.com/test-dev/image/upload/v1567446563/descarga_1_qb5pti.jpg"
+          src="https://res.cloudinary.com/test-dev/image/upload/c_scale,h_785,w_1920/v1567446563/descarga_1_qb5pti.jpg"
           alt="Third slide"
         />
         <Carousel.Caption>

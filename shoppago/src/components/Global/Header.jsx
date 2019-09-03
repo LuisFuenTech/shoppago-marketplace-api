@@ -22,27 +22,7 @@ class Header extends Component {
             <div className="col-9">
               <form onSubmit={onSubmit}>
                 <div className="input-group mt-3">
-                  <div className="input-group-prepend">
-                    {/* <DropdownButton
-                      as={InputGroup.Prepend}
-                      className="primary"
-                      title="Category"
-                      id="input-group-dropdown-1"
-                    >
-                      {categories &&
-                        categories.map((category, index) => {
-                          return (
-                            <Dropdown.Item key={index}>
-                              <Link
-                                to={`/by-category/${category.name.toLowerCase()}`}
-                              >
-                                {category.name}
-                              </Link>
-                            </Dropdown.Item>
-                          );
-                        })}
-                    </DropdownButton> */}
-                  </div>
+                  <div className="input-group-prepend"></div>
 
                   <input
                     type="text"
@@ -92,20 +72,22 @@ class Header extends Component {
                 })}
             </ul>
 
-            <Link
-              to="/shopping-cart"
-              className="btn custom-button my-2 my-sm-0"
-              type="button"
-            >
-              <span className="badge badge-pill badge-light">{counter}</span>
-              <img
-                src="https://res.cloudinary.com/test-dev/image/upload/v1567441340/shopping-cart_hdri5c.png"
-                width="35"
-                height="30"
-                className="d-inline-block align-top"
-                alt=""
-              ></img>
-            </Link>
+            <ul className="navbar-na ml-auto">
+              <Link
+                to="/shopping-cart"
+                className="btn custom-button my-2 my-sm-0 d-inline"
+                type="button"
+              >
+                <span className="badge badge-pill badge-light">{counter}</span>
+                <img
+                  src="https://res.cloudinary.com/test-dev/image/upload/v1567441340/shopping-cart_hdri5c.png"
+                  width="35"
+                  height="30"
+                  className="d-inline-block align-top"
+                  alt=""
+                ></img>
+              </Link>
+            </ul>
           </div>
         </nav>
       </div>

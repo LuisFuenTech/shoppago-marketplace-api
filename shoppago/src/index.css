@@ -51,7 +51,33 @@ code {
   background-color: #b94cc4 !important;
 }
 
-.i-am-centered {
-  margin: auto;
-  max-width: 1000px;
+.img-thumb {
+  margin: 10px;
+  width: 100%;
+  border-radius: 3%;
+  cursor: pointer;
+  -webkit-box-shadow: 0px 0px 10px 3px #692a70;
+  -moz-box-shadow: 0px 0px 10px 3px #692a70;
+  box-shadow: 0px 0px 10px 3px #692a70;
+}
+
+.img-thumb:hover {
+  -webkit-box-shadow: 0px 0px 0px 2px #b94cc4;
+  -moz-box-shadow: 0px 0px 0px 2px #b94cc4;
+  box-shadow: 0px 0px 0px 2px #b94cc4;
+}
+
+.miniature {
+  width: 269px !important;
+  display: inline-block !important;
+  margin-bottom: 5px !important;
+  margin-left: 2px !important;
+}
+
+.miniature-list {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  list-style-type: none;
+  padding: 0;
 }

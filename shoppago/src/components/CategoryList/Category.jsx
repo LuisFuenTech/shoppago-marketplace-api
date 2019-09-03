@@ -7,49 +7,31 @@ class Category extends Component {
     const { products, category } = this.props;
     return (
       <div className="container-fluid">
-        <ul className="list-group">
+        <ul className="miniature-list">
           {products &&
             products.map((product, index) => {
               return (
-                <li className="list-group-item list-group-item-action">
-                  <Row key={index}>
-                    <Col key={index + 2} xs={6} md={4}>
-                      <Image
-                        key={index}
-                        src={product.product.image || ""}
-                        rounded
-                      />
-                    </Col>
-                    <Col key={index} xs={6} md={4}>
-                      <Card key={index} style={{ width: "18rem" }}>
-                        <Card.Body key={index}>
-                          <Card.Title key={index}>
-                            <Link
-                              key={index}
-                              to={`/product-detail/category/${product.product
-                                ._id || ""}`}
-                            >
-                              {product.product.description
-                                .split(" ")
-                                .slice(0, 3)
-                                .join(" ") || ""}
-                            </Link>
-                          </Card.Title>
-                          <Card.Subtitle className="mb-2 text-muted">
-                            {product.product.price || ""}
-                          </Card.Subtitle>
-                          <Card.Text>
-                            {product.product.description || ""}
-                          </Card.Text>
-                          <hr className="my-4"></hr>
-                          <Card.Subtitle className="mb-2 text-muted">
-                            Stock: {product.product.quantity || ""}
-                          </Card.Subtitle>
-                          <Card.Text>{`Category: ${category}`}</Card.Text>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  </Row>
+                <li className="miniature list-group-item-action">
+                  <img
+                  className="img-thumb"
+                    src={product.product.image || ""}
+                    rounded>
+                  </img>
+                  <Link
+                    key={index}
+                    to={`/product-detail/category/${product.product._id || ""}`}
+                  >
+                    <h4>{product.product.name}</h4>
+                  </Link>
+                  <h5 className="mb-2 text-muted">
+                    {product.product.price || ""}
+                  </h5>
+                  <p>{product.product.description || ""}</>
+                  <hr className="my-4"></hr>
+                  <p className="mb-2 text-muted">
+                    Stock: {product.product.quantity || ""}
+                  </p>
+                  <h5>{`Category: ${category}`}</h5>
                 </li>
               );
             })}

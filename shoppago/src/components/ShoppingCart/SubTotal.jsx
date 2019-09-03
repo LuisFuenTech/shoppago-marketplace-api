@@ -72,9 +72,6 @@ class SubTotal extends Component {
           <button type="submit" className="btn button-buy">
             <i className="fas fa-money-check-alt"></i> Buy
           </button>
-          <button className="btn btn-primary" onClick={this.handleClick}>
-            Click
-          </button>
         </form>
       </div>
     );

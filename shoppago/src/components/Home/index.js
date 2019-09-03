@@ -5,13 +5,12 @@ import CardDeck from "./CardDeck";
 const Home = props => {
   const { categories } = props;
   return (
-    <div className="max-width">
-      <CardDeck categories={categories.slice(0, 3)} />
-      <br></br>
-      <CardDeck categories={categories.slice(3, 6)} />
-      <br></br>
-      <CardDeck categories={categories.slice(6)} />
-      <br></br>
+    <div align="center">
+      <ul className="miniature-list">
+        <CardDeck categories={categories.slice(0, 3)} />
+        <CardDeck categories={categories.slice(3, 6)} />
+        <CardDeck categories={categories.slice(6)} />
+      </ul>
       <CarouselHome />
     </div>
   );

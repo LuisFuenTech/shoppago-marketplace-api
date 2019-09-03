@@ -27,7 +27,8 @@ class App extends Component {
     productsCart: [],
     productList: [],
     search: "",
-    searchResult: []
+    searchResult: [],
+    emailSent: false
   };
 
   async componentDidMount() {
@@ -37,11 +38,6 @@ class App extends Component {
     }else{
 
     } */
-    localStorage.getItem("productsCart") &&
-      this.setState({
-        productsCart: JSON.parse(localStorage.getItem("productsCart")),
-        shoppingCounter: JSON.parse(localStorage.getItem("productsCart")).length
-      });
 
     if (!localStorage.getItem("productList")) {
       console.log("no productlist");
@@ -49,6 +45,13 @@ class App extends Component {
         const { data } = await axios.get("/api/product/products");
 
         if (data) this.setState({ productList: data });
+
+        localStorage.getItem("productsCart") &&
+          this.setState({
+            productsCart: JSON.parse(localStorage.getItem("productsCart")),
+            shoppingCounter: JSON.parse(localStorage.getItem("productsCart"))
+              .length
+          });
       } catch (error) {
         console.log(error);
       }

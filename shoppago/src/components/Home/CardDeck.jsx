@@ -6,11 +6,11 @@ class CardDeck extends Component {
   render() {
     const { categories } = this.props;
     return (
-      <div className="card-deck ">
+      <li className="miniature">
         {categories.map((category, index) => {
           return <Card key={index} category={category}></Card>;
         })}
-      </div>
+      </li>
     );
   }
 }
