@@ -15,7 +15,7 @@ class ShoppingCart extends Component {
             {products &&
               products.map((product, index) => {
                 return (
-                  <li className="miniature list-group-item" key={index}>
+                  <li className="list-group-item" key={index}>
                     <Product
                       key={index}
                       product={product}
