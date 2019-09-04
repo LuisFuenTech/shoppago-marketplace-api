@@ -6,7 +6,7 @@ const Home = props => {
   const { categories } = props;
   return (
     <div align="center">
-      <ul className="miniature-list">
+      <ul className="">
         <CardDeck categories={categories.slice(0, 3)} />
         <CardDeck categories={categories.slice(3, 6)} />
         <CardDeck categories={categories.slice(6)} />
