@@ -34,7 +34,7 @@ const CarouselHome = () => {
         <Carousel.Caption>
           <Link
             style={{ color: "#000000", "text-decoration": "none" }}
-            to="/by-category/beauty"
+            to="/by-category/shoes"
           >
             <h3>Anytime, anywhere</h3>
             <p>Never is late for working out</p>
