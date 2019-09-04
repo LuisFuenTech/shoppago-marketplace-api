@@ -81,16 +81,23 @@ const addProductToShopping = async (req, res) => {
 
   try {
     const findShopping = await Shopping.findById(shoppingId);
+    const findProdCat = await ProdCat.findById(productId);
 
-    findShopping.products.push(mongoose.Types.ObjectId(productId));
+    if (findProdCat && findProdCat) {
+      findShopping.products.push(findProdCat);
 
-    const shoppingUpdated = await Shopping.findByIdAndUpdate(
-      shoppingId,
-      findShopping,
-      { new: true }
-    );
+      const shoppingUpdated = await Shopping.findByIdAndUpdate(
+        shoppingId,
+        findShopping,
+        { new: true }
+      );
 
-    res.status(201).json(shoppingUpdated);
+      res.status(201).json(shoppingUpdated);
+    } else {
+      res
+        .status(500)
+        .json({ error: "Shopping cart or product not found", error });
+    }
   } catch (error) {
     res.status(500).json({ error: "Shopping cart not found", error });
   }
@@ -120,8 +127,8 @@ const getShopping = async (req, res) => {
 
   try {
     const findShopping = await Shopping.findOne({ _id: id }).populate({
-      path: "productcategory",
-      populate: { path: "productcategory" }
+      path: "products",
+      populate: { path: "product category" }
     });
 
     res.status(200).json(findShopping);
