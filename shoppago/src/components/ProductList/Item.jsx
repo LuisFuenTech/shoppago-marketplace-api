@@ -7,7 +7,7 @@ class Item extends Component {
     return (
       <div className="container-fluid">
         <center>
-          <ul className="miniature-list">
+          <ul className="">
             {products &&
               products.map((product, index) => {
                 return (

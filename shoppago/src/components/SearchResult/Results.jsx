@@ -7,7 +7,7 @@ class Result extends Component {
     return (
       <div className="container-fluid">
         <center>
-          <ul className="miniature-list">
+          <ul className="">
             {results &&
               results.map((result, index) => {
                 return (

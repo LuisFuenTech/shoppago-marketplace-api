@@ -170,8 +170,6 @@ const getProducts = async (req, res) => {
   try {
     const findProducts = await Product.find({});
 
-    console.log("Counts of products:", findProducts.length);
-
     res.status(200).json(findProducts);
   } catch (error) {
     res.status(400).json(error);

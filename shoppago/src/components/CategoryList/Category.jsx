@@ -6,11 +6,11 @@ class Category extends Component {
     const { products, category } = this.props;
     return (
       <div className="container-fluid">
-        <ul className="miniature-list">
+        <ul className="">
           {products &&
             products.map((product, index) => {
               return (
-                <li className="miniature ">
+                <li className="miniature">
                   <center>
                     <Link
                       style={{ "text-decoration": "none", color: "#692a70" }}
