@@ -247,7 +247,6 @@ const searchProductbyWords = async (req, res) => {
     const productsFounded = await Product.find({
       $text: { $search: `${words}` }
     });
-
     res.status(200).json(productsFounded);
   } catch (error) {
     res.status(404).json({ error });

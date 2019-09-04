@@ -75,7 +75,8 @@ class App extends Component {
         `https://shoppago-market.herokuapp.com/api/product/search?words=${this.state.search}`
       );
       this.setState({ searchResult: data });
-      if (data) this.props.history.push("/result-list");
+      if (data.length > 0) this.props.history.push("/result-list");
+      else this.props.history.push("/not-found");
     } catch (error) {
       this.props.history.push("/not-found");
     }
