@@ -22,7 +22,7 @@ app.put("/product/:id", apiController.updateProduct);
 //Serving all endpoints for DELETE requests
 app.delete("/product/:id", apiController.deleteProduct);
 app.delete(
-  "/shoppig/product/:shoppingId",
+  "/shopping/product/:shoppingId",
   apiController.deleteProductFromShopping
 );
 
