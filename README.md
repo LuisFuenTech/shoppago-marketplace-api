@@ -9,7 +9,7 @@ Anyone can consume the API, just following the next HTTP request. All those requ
 ### Products:
 
 - GET [https://shoppago-market.herokuapp.com/api/product/products](https://shoppago-market.herokuapp.com/api/product/products) : return the list (array) of all products in stock.
-- GET [https://shoppago-market.herokuapp.com/api/products-category](https://shoppago-market.herokuapp.com/api/product-category) : return list (array) of products related with its category.
+- GET [https://shoppago-market.herokuapp.com/api/products-category](https://shoppago-market.herokuapp.com/api/products-category) : return list (array) of products related with its category.
 - GET [https://shoppago-market.herokuapp.com/api/product/search?words[]={word1}&words[]={word2}](https://shoppago-market.herokuapp.com/api/product/search?words[]=xbox&words[]=nintendo) : this receive a array of words via query string, then return all products that match.
 - GET [https://shoppago-market.herokuapp.com/api/product/:id](https://shoppago-market.herokuapp.com/api/product/5d6decfaa3fdb3241c3ba103) : return a product detail if the you provide and id.
   Response of the GET request:
