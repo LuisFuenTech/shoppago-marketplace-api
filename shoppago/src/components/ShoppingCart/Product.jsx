@@ -12,11 +12,11 @@ class Product extends Component {
             alt=""
             style={{ width: "250px", height: "250px" }}
             className="img-thumb"
-            src={product.image || ""}
+            src={product.product.image || ""}
             rounded
           ></img>
-          <h4>{product.name}</h4>
-          <h5 className="mb-2 text-muted">{product.price}</h5>
+          <h4>{product.product.name}</h4>
+          <h5 className="mb-2 text-muted">{product.product.price}</h5>
           {product.count > 0 ? (
             <button
               onClick={onDecrement}
@@ -35,7 +35,7 @@ class Product extends Component {
           <span className="badge badge-primary badge-pill">
             {product.count}
           </span>
-          <p>{"Stock: " + product.quantity}</p>
+          <p>{"Stock: " + product.product.quantity}</p>
           <Button variant="danger" onClick={onRemoveItem}>
             Delete
           </Button>

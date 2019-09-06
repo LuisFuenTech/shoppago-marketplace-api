@@ -4,12 +4,13 @@ import axios from "axios";
 import { Route, Switch, withRouter } from "react-router-dom";
 
 //Data
-import { Categories, Navbar } from "./data/index";
+import Categories from "./data/categories";
+import Navbar from "./data/navbar-data";
 
 //Componennts
 import Header from "./components/Global/Header";
 import Footer from "./components/Global/Footer";
-import Home from "./components/Home/index";
+import Home from "./components/Home";
 import Contact from "./components/Contact";
 import ProductList from "./components/ProductList";
 import ShoppingCart from "./components/ShoppingCart";
@@ -38,13 +39,13 @@ class App extends Component {
       });
   }
 
-  componentDidUpdate(nextProps, nextState) {
-    localStorage.setItem("productList", JSON.stringify(nextState.productList));
-    localStorage.setItem(
-      "productsCart",
-      JSON.stringify(nextState.productsCart)
-    );
-  }
+  // componentDidUpdate(nextProps, nextState) {
+  //   localStorage.setItem("productList", JSON.stringify(nextState.productList));
+  //   localStorage.setItem(
+  //     "productsCart",
+  //     JSON.stringify(nextState.productsCart)
+  //   );
+  // }
 
   /* 
     Abtraer llamado de axios como modulo independiente.
@@ -53,9 +54,12 @@ class App extends Component {
   async componentDidMount() {
     if (!localStorage.getItem("productList")) {
       try {
-        const { data } = await axios.get("/api/product/products");
+        const { data } = await axios.get(
+          "https://shoppago-market.herokuapp.com/api/product/products"
+        );
 
-        if (data) this.setState({ productList: data });
+        alert(JSON.stringify(data));
+        this.setState({ productList: JSON.stringify(data) });
       } catch (error) {
         console.log(error);
       }
@@ -71,7 +75,7 @@ class App extends Component {
 
     try {
       const { data } = await axios.get(
-        `/api/product/search?words=${this.state.search}`
+        `https://shoppago-market.herokuapp.com/api/product/search?words=${this.state.search}`
       );
       this.setState({ searchResult: data });
       if (data.length > 0) this.props.history.push("/result-list");

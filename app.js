@@ -8,7 +8,7 @@ const path = require("path");
 const redirectToHTTPS = require("express-http-to-https").redirectToHTTPS;
 
 //Routes
-const { apiRoutes } = require("./api/index");
+const { apiRoutes } = require("./api");
 
 //Settings
 // Serve the static files from the React app

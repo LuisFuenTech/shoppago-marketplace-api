@@ -12,9 +12,11 @@ const addCategory = async (req, res) => {
   try {
     const categorySaved = await newCategory.save();
     //If the object was successfully added, return 201 code
-    res.status(201).json({ message: "Category added", item: categorySaved });
+    return res
+      .status(201)
+      .json({ message: "Category added", item: categorySaved });
   } catch (error) {
-    res.status(500).json({ message: "Operation failed", error });
+    return res.status(500).json({ message: "Operation failed", error });
   }
 };
 
@@ -65,10 +67,10 @@ const addProduct = async (req, res) => {
 
       const savedProCat = await newProdCat.save();
       if (savedProCat) prodCat.push(savedProCat);
-      res.status(201).json({ message: "Product added", items: prodCat });
+      return res.status(201).json({ message: "Product added", items: prodCat });
     }
   } catch (error) {
-    res.status(500).send({ message: "Operation failed", error });
+    return res.status(500).send({ message: "Operation failed", error });
   }
 };
 
@@ -91,14 +93,14 @@ const addProductToShopping = async (req, res) => {
         { new: true }
       );
 
-      res.status(201).json(shoppingUpdated);
+      return res.status(201).json(shoppingUpdated);
     } else {
-      res
+      return res
         .status(500)
         .json({ error: "Shopping cart or product not found", error });
     }
   } catch (error) {
-    res.status(500).json({ error: "Shopping cart not found", error });
+    return res.status(500).json({ error: "Shopping cart not found", error });
   }
 };
 
@@ -110,11 +112,11 @@ const addShopping = async (req, res) => {
 
   try {
     const shoppingCreated = await newShopping.save();
-    res
+    return res
       .status(201)
       .json({ message: "Shopping cart created", shopping: shoppingCreated });
   } catch (error) {
-    res.status(500).json({ error: "Something went wrong", error });
+    return res.status(500).json({ error: "Something went wrong", error });
   }
 };
 
@@ -130,9 +132,11 @@ const getShopping = async (req, res) => {
       populate: { path: "product category" }
     });
 
-    res.status(200).json(findShopping);
+    return res.status(200).json(findShopping);
   } catch (error) {
-    res.status(404).json({ messsage: `Shopping cart doesn't exist`, error });
+    return res
+      .status(404)
+      .json({ messsage: `Shopping cart doesn't exist`, error });
   }
 };
 
@@ -153,9 +157,9 @@ const getProductByCategory = async (req, res) => {
       select: "-__v"
     });
 
-    res.status(200).json(findProducts);
+    return res.status(200).json(findProducts);
   } catch (error) {
-    res.status(500).json({ error });
+    return res.status(500).json({ error });
   }
 };
 
@@ -165,9 +169,9 @@ const getProduct = async (req, res) => {
 
   try {
     const findProduct = await Product.findById(id);
-    res.status(200).json(findProduct);
+    return res.status(200).json(findProduct);
   } catch (error) {
-    res.status(400).json(error);
+    return res.status(400).json(error);
   }
 };
 
@@ -187,7 +191,7 @@ const getProducts = async (req, res) => {
 
 /*
   Deleting a product using its id given via params.
-  Also delete de document product-category created
+  Also delete the document product-category created
 */
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
@@ -198,7 +202,7 @@ const deleteProduct = async (req, res) => {
     const results = await Promise.all([deleteProdCat, deleteProduct]);
     return res.status(200).json(results);
   } catch (error) {
-    res.status(400).json(error);
+    return res.status(400).json(error);
   }
 };
 
@@ -222,9 +226,9 @@ const deleteProductFromShopping = async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json({ shoppingUpdated });
+    return res.status(200).json({ shoppingUpdated });
   } catch (error) {
-    res.status(404).json(error);
+    return res.status(404).json(error);
   }
 };
 
@@ -247,7 +251,7 @@ const searchProductbyWords = async (req, res) => {
     });
     return res.status(200).json(productsFounded);
   } catch (error) {
-    res.status(404).json({ error });
+    return res.status(404).json({ error });
   }
 };
 
@@ -278,9 +282,9 @@ const makePurchase = async (req, res) => {
 
   try {
     await MailSender.sendMail(email, subtotal, shoppingCart);
-    res.status(200).json("Mail sent");
+    return res.status(200).json("Mail sent");
   } catch (error) {
-    res.status(400).json(error);
+    return res.status(400).json(error);
   }
 };
 
@@ -297,11 +301,11 @@ const updateProduct = async (req, res) => {
       new: true
     });
 
-    res
+    return res
       .status(200)
       .json({ message: "Product updated", product: productUpdated });
   } catch (error) {
-    res.status(400).json(error);
+    return res.status(400).json(error);
   }
 };
 
