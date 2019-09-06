@@ -54,8 +54,7 @@ class App extends Component {
       try {
         const { data } = await axios.get("/api/product/products");
 
-        alert(JSON.stringify(data));
-        this.setState({ productList: JSON.stringify(data) });
+        this.setState({ productList: data });
       } catch (error) {
         console.log(error);
       }
