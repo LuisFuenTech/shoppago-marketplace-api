@@ -31,13 +31,13 @@ class App extends Component {
     emailSent: false
   };
 
-  componentWillMount() {
-    localStorage.getItem("productsCart") &&
-      this.setState({
-        productsCart: JSON.parse(localStorage.getItem("productsCart")),
-        shoppingCounter: JSON.parse(localStorage.getItem("productsCart")).length
-      });
-  }
+  // componentWillMount() {
+  //   localStorage.getItem("productsCart") &&
+  //     this.setState({
+  //       productsCart: JSON.parse(localStorage.getItem("productsCart")),
+  //       shoppingCounter: JSON.parse(localStorage.getItem("productsCart")).length
+  //     });
+  // }
 
   //WARNING! To be deprecated in React v17. Use componentDidUpdate instead.
   //WARNING! To be deprecated in React v17. Use componentDidUpdate instead.
