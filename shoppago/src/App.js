@@ -39,19 +39,23 @@ class App extends Component {
       });
   }
 
-  // componentDidUpdate(nextProps, nextState) {
-  //   localStorage.setItem("productList", JSON.stringify(nextState.productList));
-  //   localStorage.setItem(
-  //     "productsCart",
-  //     JSON.stringify(nextState.productsCart)
-  //   );
-  // }
+  //WARNING! To be deprecated in React v17. Use componentDidUpdate instead.
+  //WARNING! To be deprecated in React v17. Use componentDidUpdate instead.
+  componentDidUpdate(nextProps, nextState) {
+    localStorage.setItem("productList", JSON.stringify(nextState.productList));
+    localStorage.setItem(
+      "productsCart",
+      JSON.stringify(nextState.productsCart)
+    );
+  }
 
-  /* 
-    Abtraer llamado de axios como modulo independiente.
-    Variable de entorno para guardar el root del aplicativo
-  */
   async componentDidMount() {
+    localStorage.getItem("productsCart") &&
+      this.setState({
+        productsCart: JSON.parse(localStorage.getItem("productsCart")),
+        shoppingCounter: JSON.parse(localStorage.getItem("productsCart")).length
+      });
+
     if (!localStorage.getItem("productList")) {
       try {
         const { data } = await axios.get(
