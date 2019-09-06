@@ -59,7 +59,7 @@ class App extends Component {
     if (!localStorage.getItem("productList")) {
       try {
         const { data } = await axios.get(
-          "https://shoppago-market.herokuapp.com/api/product/products"
+          "/api/product/products"
         );
 
         alert(JSON.stringify(data));
@@ -79,7 +79,7 @@ class App extends Component {
 
     try {
       const { data } = await axios.get(
-        `https://shoppago-market.herokuapp.com/api/product/search?words=${this.state.search}`
+        `/api/product/search?words=${this.state.search}`
       );
       this.setState({ searchResult: data });
       if (data.length > 0) this.props.history.push("/result-list");
