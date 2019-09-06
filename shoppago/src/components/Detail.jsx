@@ -9,13 +9,13 @@ class Detail extends Component {
   componentDidMount() {
     const { products } = this.props;
     const product = products.filter(
-      item => item._id === this.props.match.params._id
+      item => item.product._id === this.props.match.params._id
     );
     this.setState({ product: product[0] });
   }
 
   getProduct = (products, _id) => {
-    return products.filter(item => item._id === _id)[0];
+    return products.filter(item => item.product._id === _id)[0];
   };
 
   render() {
@@ -34,7 +34,7 @@ class Detail extends Component {
               <div className="col-4">
                 <img
                   style={{ height: "300px", width: "300px" }}
-                  src={product.image}
+                  src={product.product.image}
                   alt=""
                 ></img>
               </div>

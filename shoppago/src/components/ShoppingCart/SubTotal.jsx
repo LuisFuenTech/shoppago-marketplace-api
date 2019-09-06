@@ -13,14 +13,11 @@ class SubTotal extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     try {
-      await axios.post(
-        "https://shoppago-market.herokuapp.com/api/shopping/buy",
-        {
-          cart: localStorage.getItem("productsCart"),
-          subtotal: this.getTotalPriceFixed(this.props.products),
-          email: this.state.email
-        }
-      );
+      await axios.post("/api/shopping/buy", {
+        cart: localStorage.getItem("productsCart"),
+        subtotal: this.getTotalPriceFixed(this.props.products),
+        email: this.state.email
+      });
       this.props.history.push("/mail-sent");
     } catch (error) {
       this.props.history.push("/shopping-cart");
@@ -36,10 +33,6 @@ class SubTotal extends Component {
 
   handleOnChange = event => {
     this.setState({ email: event.target.value });
-  };
-
-  handleClick = () => {
-    this.props.history.push("/not-found");
   };
 
   render() {

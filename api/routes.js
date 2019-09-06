@@ -4,7 +4,6 @@ const { apiController } = require("./index");
 //Serving all endpoints for GET requests
 app.get("/category/:name", apiController.getProductByCategory);
 app.get("/product/products", apiController.getProducts);
-app.get("/products-category", apiController.getProductsCat);
 app.get("/shopping/cart/:id", apiController.getShopping);
 app.get("/product/search", apiController.searchProductbyWords);
 app.get("/product/:id", apiController.getProduct);

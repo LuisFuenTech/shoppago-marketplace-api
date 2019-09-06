@@ -1,10 +1,9 @@
-const mongoose = require("mongoose");
-const MailSender = require("../services/sendMail");
-const { Product, ProdCat, Category, Shopping } = require("../schemas/index");
+const { SendMail: MailSender } = require("../services");
+const { Product, ProdCat, Category, Shopping } = require("../schemas");
 
 /*
   This function add a new category using a name provided for user.
-  return a json with the object saved¿
+  return a json with the object saved
 */
 const addCategory = async (req, res) => {
   const { name } = req.body;
@@ -60,8 +59,8 @@ const addProduct = async (req, res) => {
     //Save reference if previous task is completed, comparing data given by Promise
     if (result) {
       const newProdCat = new ProdCat({
-        product: result[0].name != category ? result[0]._id : result[1],
-        category: result[0].name == category ? result[0]._id : result[1]
+        product: result[0].name != category ? result[0]._id : result[1]._id,
+        category: result[0].name == category ? result[0]._id : result[1]._id
       });
 
       const savedProCat = await newProdCat.save();
@@ -83,7 +82,7 @@ const addProductToShopping = async (req, res) => {
     const findShopping = await Shopping.findById(shoppingId);
     const findProdCat = await ProdCat.findById(productId);
 
-    if (findProdCat && findProdCat) {
+    if (findShopping && findProdCat) {
       findShopping.products.push(findProdCat);
 
       const shoppingUpdated = await Shopping.findByIdAndUpdate(
@@ -175,25 +174,14 @@ const getProduct = async (req, res) => {
 //Get the list of all products
 const getProducts = async (req, res) => {
   try {
-    const findProducts = await Product.find({});
-
-    res.status(200).json(findProducts);
-  } catch (error) {
-    res.status(400).json(error);
-  }
-};
-
-//Get the data populated on product and category
-const getProductsCat = async (req, res) => {
-  try {
     const findProducts = await ProdCat.find({}).populate({
       path: "product category",
-      select: "-__V"
+      select: "-__v"
     });
 
-    res.status(200).json(findProducts);
+    return res.status(200).json(findProducts);
   } catch (error) {
-    res.status(400).json(error);
+    return res.status(400).json(error);
   }
 };
 
@@ -208,7 +196,7 @@ const deleteProduct = async (req, res) => {
 
   try {
     const results = await Promise.all([deleteProdCat, deleteProduct]);
-    res.status(200).json(results);
+    return res.status(200).json(results);
   } catch (error) {
     res.status(400).json(error);
   }
@@ -227,6 +215,7 @@ const deleteProductFromShopping = async (req, res) => {
     const newProductsList = findShopping.products.filter(
       item => item._id != productId
     );
+
     const shoppingUpdated = await Shopping.findByIdAndUpdate(
       shoppingId,
       { products: newProductsList },
@@ -249,12 +238,14 @@ const searchProductbyWords = async (req, res) => {
   /*
     For this operation, I creat a index type text on mongoDB,
     pointing to the product description
+
+    Note: regex (mongo db)
   */
   try {
     const productsFounded = await Product.find({
       $text: { $search: `${words}` }
     });
-    res.status(200).json(productsFounded);
+    return res.status(200).json(productsFounded);
   } catch (error) {
     res.status(404).json({ error });
   }
@@ -322,7 +313,6 @@ module.exports = {
   getProduct,
   getProductByCategory,
   getProducts,
-  getProductsCat,
   getShopping,
   searchProductbyWords,
   deleteProduct,

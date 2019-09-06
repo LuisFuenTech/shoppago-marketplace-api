@@ -4,8 +4,7 @@ import axios from "axios";
 import { Route, Switch, withRouter } from "react-router-dom";
 
 //Data
-import navbar from "./data/navbar-data";
-import categories from "./data/categories";
+import { Categories, Navbar } from "./data/index";
 
 //Componennts
 import Header from "./components/Global/Header";
@@ -39,9 +38,7 @@ class App extends Component {
       });
   }
 
-  //WARNING! To be deprecated in React v17. Use componentDidUpdate instead.
-  //WARNING! To be deprecated in React v17. Use componentDidUpdate instead.
-  componentWillUpdate(nextProps, nextState) {
+  componentDidUpdate(nextProps, nextState) {
     localStorage.setItem("productList", JSON.stringify(nextState.productList));
     localStorage.setItem(
       "productsCart",
@@ -49,12 +46,14 @@ class App extends Component {
     );
   }
 
+  /* 
+    Abtraer llamado de axios como modulo independiente.
+    Variable de entorno para guardar el root del aplicativo
+  */
   async componentDidMount() {
     if (!localStorage.getItem("productList")) {
       try {
-        const { data } = await axios.get(
-          "https://shoppago-market.herokuapp.com/api/product/products"
-        );
+        const { data } = await axios.get("/api/product/products");
 
         if (data) this.setState({ productList: data });
       } catch (error) {
@@ -72,7 +71,7 @@ class App extends Component {
 
     try {
       const { data } = await axios.get(
-        `https://shoppago-market.herokuapp.com/api/product/search?words=${this.state.search}`
+        `/api/product/search?words=${this.state.search}`
       );
       this.setState({ searchResult: data });
       if (data.length > 0) this.props.history.push("/result-list");
@@ -143,8 +142,8 @@ class App extends Component {
     return (
       <React.Fragment>
         <Header
-          items={navbar}
-          categories={categories}
+          items={Navbar}
+          categories={Categories}
           counter={shoppingCounter}
           onChange={this.handleChange}
           onSubmit={this.handleSubmit}
@@ -154,7 +153,7 @@ class App extends Component {
             <Route
               exact
               path="/"
-              component={props => <Home {...props} categories={categories} />}
+              component={props => <Home {...props} categories={Categories} />}
             />
             <Route
               exact

@@ -1,2 +1,4 @@
-export const navbar = require("./navbar-data");
-export const categories = require("./categories");
+import navbar from "./navbar-data";
+import categories from "./categories";
+export const Navbar = navbar;
+export const Categories = categories;

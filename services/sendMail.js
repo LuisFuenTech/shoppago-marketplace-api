@@ -1,10 +1,11 @@
-const HtmlReady = require("./generateHtml");
+const { GenerateHtml: HtmlReady } = require("./index");
 
 //Using SendGrid API for sending emails
 const sendMail = async function(recipient, subtotal, products) {
   const sgMail = require("@sendgrid/mail");
 
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
   const msg = {
     to: recipient,
     from: "Shoppago Marketplace <shoppago.io@email.com>",
@@ -25,10 +26,6 @@ function mailResponse(sender, message) {
   return new Promise((resolve, reject) => {
     resolve(sender.send(message));
   });
-}
-
-function makeHtml(products) {
-  return;
 }
 
 module.exports = {
