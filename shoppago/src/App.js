@@ -41,7 +41,7 @@ class App extends Component {
 
   //WARNING! To be deprecated in React v17. Use componentDidUpdate instead.
   //WARNING! To be deprecated in React v17. Use componentDidUpdate instead.
-  componentWillUpdate(nextProps, nextState) {
+  componentDidUpdate(nextProps, nextState) {
     localStorage.setItem("productList", JSON.stringify(nextState.productList));
     localStorage.setItem(
       "productsCart",
@@ -50,6 +50,12 @@ class App extends Component {
   }
 
   async componentDidMount() {
+    localStorage.getItem("productsCart") &&
+      this.setState({
+        productsCart: JSON.parse(localStorage.getItem("productsCart")),
+        shoppingCounter: JSON.parse(localStorage.getItem("productsCart")).length
+      });
+
     if (!localStorage.getItem("productList")) {
       try {
         const { data } = await axios.get(
