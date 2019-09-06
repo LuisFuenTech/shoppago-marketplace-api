@@ -36,7 +36,7 @@ class CategoryDetail extends Component {
             <h3>{product.product.price}</h3>
             <h3 className="lead">{product.product.description}</h3>
             <hr className="my-4"></hr>
-            {product.product.inCart ? (
+            {product.inCart ? (
               <button className="btn btn-primary btn-lg" disabled>
                 <i className="fas fa-cart-plus"></i> In Cart
               </button>
