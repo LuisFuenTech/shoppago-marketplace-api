@@ -50,17 +50,9 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    localStorage.getItem("productsCart") &&
-      this.setState({
-        productsCart: JSON.parse(localStorage.getItem("productsCart")),
-        shoppingCounter: JSON.parse(localStorage.getItem("productsCart")).length
-      });
-
     if (!localStorage.getItem("productList")) {
       try {
-        const { data } = await axios.get(
-          "/api/product/products"
-        );
+        const { data } = await axios.get("/api/product/products");
 
         alert(JSON.stringify(data));
         this.setState({ productList: JSON.stringify(data) });
@@ -72,6 +64,12 @@ class App extends Component {
         productList: JSON.parse(localStorage.getItem("productList"))
       });
     }
+
+    localStorage.getItem("productsCart") &&
+      this.setState({
+        productsCart: JSON.parse(localStorage.getItem("productsCart")),
+        shoppingCounter: JSON.parse(localStorage.getItem("productsCart")).length
+      });
   }
 
   handleSubmit = async event => {
