@@ -28,7 +28,7 @@ class App extends Component {
     search: "",
     searchResult: [],
     emailSent: false,
-    categories = []
+    categories: []
   };
 
   // componentWillMount() {
@@ -53,7 +53,9 @@ class App extends Component {
     if (!localStorage.getItem("productList")) {
       try {
         const { data: products } = await axios.get("/api/product/products");
-        const {data: categories} = await axios.get('/api/category/categories')
+        const { data: categories } = await axios.get(
+          "/api/category/categories"
+        );
 
         this.setState({ productList: products, categories: categories });
       } catch (error) {
