@@ -20,6 +20,18 @@ const addCategory = async (req, res) => {
   }
 };
 
+const getCategories = async (req, res) => {
+  try {
+    const findCategories = await Category.find({});
+    console.log("TCL: getCategories -> findCategories", findCategories);
+    return findCategories
+      ? res.status(200).json(findCategories)
+      : res.status(404).json({ message: "Categories not found" });
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
 /*
   This function is used for add a new product, using the data
   provided for user.
@@ -148,7 +160,7 @@ const getProductByCategory = async (req, res) => {
   const { name } = req.params;
 
   try {
-    const findCategory = await Category.findOne({ name: name });
+    const findCategory = await Category.findOne({ name: name.toLowerCase() });
 
     const findProducts = await ProdCat.find({
       category: findCategory._id
@@ -311,6 +323,7 @@ const updateProduct = async (req, res) => {
 
 module.exports = {
   addCategory,
+  getCategories,
   addProduct,
   addShopping,
   addProductToShopping,

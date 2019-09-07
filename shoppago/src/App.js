@@ -4,7 +4,6 @@ import axios from "axios";
 import { Route, Switch, withRouter } from "react-router-dom";
 
 //Data
-import Categories from "./data/categories";
 import Navbar from "./data/navbar-data";
 
 //Componennts
@@ -28,7 +27,8 @@ class App extends Component {
     productList: [],
     search: "",
     searchResult: [],
-    emailSent: false
+    emailSent: false,
+    categories = []
   };
 
   // componentWillMount() {
@@ -52,9 +52,10 @@ class App extends Component {
   async componentDidMount() {
     if (!localStorage.getItem("productList")) {
       try {
-        const { data } = await axios.get("/api/product/products");
+        const { data: products } = await axios.get("/api/product/products");
+        const {data: categories} = await axios.get('/api/category/categories')
 
-        this.setState({ productList: data });
+        this.setState({ productList: products, categories: categories });
       } catch (error) {
         console.log(error);
       }
@@ -141,14 +142,14 @@ class App extends Component {
       shoppingCounter,
       productsCart,
       productList,
-      searchResult
+      searchResult,
+      categories
     } = this.state;
 
     return (
       <React.Fragment>
         <Header
           items={Navbar}
-          categories={Categories}
           counter={shoppingCounter}
           onChange={this.handleChange}
           onSubmit={this.handleSubmit}
@@ -158,7 +159,7 @@ class App extends Component {
             <Route
               exact
               path="/"
-              component={props => <Home {...props} categories={Categories} />}
+              component={props => <Home {...props} categories={categories} />}
             />
             <Route
               exact

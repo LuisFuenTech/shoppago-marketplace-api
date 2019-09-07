@@ -2,6 +2,7 @@ const app = require("express").Router();
 const { apiController } = require("./index");
 
 //Serving all endpoints for GET requests
+app.get("/category/categories", apiController.getCategories);
 app.get("/category/:name", apiController.getProductByCategory);
 app.get("/product/products", apiController.getProducts);
 app.get("/shopping/cart/:id", apiController.getShopping);

@@ -19,7 +19,7 @@ class Card extends Component {
           ></img>
         </center>
         <center>
-          <h5 className="card-title mt-2">{category.name}</h5>
+          <h5 className="card-title mt-2">{category.name.toUpperCase()}</h5>
         </center>
       </Link>
     );
