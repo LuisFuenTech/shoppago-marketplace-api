@@ -1,9 +1,9 @@
-import React from "react";
+import React, { Component } from "react";
 import CarouselHome from "./Carousel";
 import CardDeck from "./CardDeck";
 import Loading from "../Loading";
 
-class Home extends Component() {
+class Home extends Component {
   render() {
     const cards = [];
     const { categories } = props;
