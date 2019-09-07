@@ -6,7 +6,7 @@ import Loading from "../Loading";
 class Home extends Component {
   render() {
     const cards = [];
-    const { categories } = props;
+    const { categories } = this.props;
 
     for (let i = 0; i < categories.length; i += 3) {
       cards.push(<CardDeck categories={categories.slice(i, i + 3)} />);
