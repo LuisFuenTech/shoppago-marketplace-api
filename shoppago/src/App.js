@@ -63,14 +63,17 @@ class App extends Component {
       }
     } else {
       this.setState({
-        productList: JSON.parse(localStorage.getItem("productList"))
+        productList: JSON.parse(localStorage.getItem("productList")),
+        categories: JSON.parse(localStorage.getItem("categories"))
       });
     }
 
     localStorage.getItem("productsCart") &&
       this.setState({
         productsCart: JSON.parse(localStorage.getItem("productsCart")),
-        shoppingCounter: JSON.parse(localStorage.getItem("productsCart")).length
+        shoppingCounter: JSON.parse(localStorage.getItem("productsCart"))
+          .length,
+        categories: JSON.parse(localStorage.getItem("categories"))
       });
   }
 
